@@ -1,18 +1,15 @@
-import React from "react";
-
-// Bands 6–8: y=702–1122
 const LABEL_Y = 715;
 const FIRST_LINE_Y = 728;
 const LINE_SPACING = 24;
 const LINE_COUNT = 16;
 
-interface Props {
+interface BandNotesProps {
   title: string;
   artist: string;
   pageNumber?: number;
 }
 
-export const BandNotes: React.FC<Props> = ({ title, artist, pageNumber = 1 }) => {
+const BandNotes = ({ title, artist, pageNumber = 1 }: BandNotesProps) => {
   const lines = Array.from({ length: LINE_COUNT }, (_, i) => FIRST_LINE_Y + i * LINE_SPACING);
 
   return (
@@ -24,7 +21,6 @@ export const BandNotes: React.FC<Props> = ({ title, artist, pageNumber = 1 }) =>
           stroke="#8B6914" strokeWidth="0.4" opacity="0.22" />
       ))}
 
-      {/* Footer */}
       <line x1="48" y1="1103" x2="740" y2="1103" stroke="#A07828" strokeWidth="0.4" opacity="0.35" />
       <text x="48"  y="1115" className="pf">maple</text>
       <text x="394" y="1115" textAnchor="middle" className="pf">
@@ -34,3 +30,5 @@ export const BandNotes: React.FC<Props> = ({ title, artist, pageNumber = 1 }) =>
     </>
   );
 };
+
+export default BandNotes;

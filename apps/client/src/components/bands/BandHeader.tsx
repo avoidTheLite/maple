@@ -1,17 +1,19 @@
-import React from "react";
-import { SongData } from "../../types/music";
-import { ChordDiagram } from "../music/ChordDiagram";
+import type { SongData } from '@maple/types';
+import ChordDiagram from '../music/ChordDiagram';
 
 const DIAGRAM_X_START = 52;
 const DIAGRAM_SPACING = 48;
 const DIAGRAMS_Y = 78;
 
-export const BandHeader: React.FC<{ song: SongData }> = ({ song }) => {
+interface BandHeaderProps {
+  song: SongData;
+}
+
+const BandHeader = ({ song }: BandHeaderProps) => {
   const { title, artist, album, year, key, tempo, timeSig, tuning, capo, mode, chords, structureLines } = song;
 
   return (
     <>
-      {/* Title / meta block */}
       <text x="48" y="20" className="ttl">{title}</text>
       <text x="48" y="33" className="sub">{artist}  ·  {album}  ({year})</text>
       <text x="490" y="20" className="met">Key: {key}  ·  Tempo: {tempo}  ·  {timeSig}</text>
@@ -20,25 +22,23 @@ export const BandHeader: React.FC<{ song: SongData }> = ({ song }) => {
       <line x1="48" y1="38" x2="475" y2="38" stroke="#A07828" strokeWidth="0.5" opacity="0.4" />
       <line x1="48" y1="50" x2="740" y2="50" stroke="#A07828" strokeWidth="0.5" opacity="0.4" />
 
-      {/* Section labels */}
       <text x="48"  y="62" className="sec">CHORDS USED</text>
       <text x="260" y="62" className="sec">STRUCTURE</text>
 
-      {/* Chord diagrams */}
       {chords.slice(0, 5).map((chord, i) => (
         <g key={chord.name} transform={`translate(${DIAGRAM_X_START + i * DIAGRAM_SPACING}, ${DIAGRAMS_Y})`}>
           <ChordDiagram chord={chord} />
         </g>
       ))}
 
-      {/* Structure box */}
       <rect x="258" y={DIAGRAMS_Y} width="476" height="46" className="cbox" rx="3" />
       {structureLines.map((line, i) => (
         <text key={i} x="268" y={91 + i * 13} className="met">{line}</text>
       ))}
 
-      {/* Band divider */}
       <line x1="48" y1="138" x2="740" y2="138" className="div" />
     </>
   );
 };
+
+export default BandHeader;

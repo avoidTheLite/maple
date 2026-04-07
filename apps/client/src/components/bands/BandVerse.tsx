@@ -1,19 +1,17 @@
-import React from "react";
-import { LyricRow } from "../../types/music";
+import type { LyricRow } from '@maple/types';
 
-// Band 3: y=281–421
 const BAND_TOP = 281;
-const LABEL_Y = BAND_TOP + 13; // 294
-const CONTENT_Y = LABEL_Y + 16; // 310
+const LABEL_Y = BAND_TOP + 13;
+const CONTENT_Y = LABEL_Y + 16;
 const ROW_HEIGHT = 34;
 
-interface Props {
+interface BandVerseProps {
   annotation: string;
   annotationX: number;
   rows: LyricRow[];
 }
 
-export const BandVerse: React.FC<Props> = ({ annotation, annotationX, rows }) => (
+const BandVerse = ({ annotation, annotationX, rows }: BandVerseProps) => (
   <>
     <text x="48" y={LABEL_Y} className="sec">VERSE  </text>
     <text x={annotationX} y={LABEL_Y} className="hl">{annotation}</text>
@@ -41,3 +39,5 @@ export const BandVerse: React.FC<Props> = ({ annotation, annotationX, rows }) =>
     <line x1="48" y1="419" x2="740" y2="419" className="div" />
   </>
 );
+
+export default BandVerse;
