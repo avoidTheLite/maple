@@ -31,6 +31,9 @@ yarn-error.log*
 .cache/
 .eslintcache
 
+# Local LLM response cache (dev)
+apps/api/.llm-cache/
+
 # Vite
 vite.config.ts.timestamp-*
 

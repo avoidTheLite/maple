@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { generateController } from './generateController.ts';
+import type { GenerateDeps } from './generateService.ts';
+import { createGenerateController } from './generateController.ts';
 
-export const generateRouter = Router();
-
-const controller = generateController();
-
-generateRouter.post('/', controller.generate);
+export function createGenerateRouter(getDeps: () => GenerateDeps) {
+  const router = Router();
+  const { generate } = createGenerateController(getDeps);
+  router.post('/', generate);
+  return router;
+}

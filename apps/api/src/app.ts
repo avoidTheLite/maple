@@ -1,12 +1,22 @@
 import express from 'express';
 import cors from 'cors';
-import { generateRouter } from './generate/generateRouter.ts';
+import { mapleGenerateDeps } from './generate/createGenerateDeps.ts';
+import type { GenerateDeps } from './generate/generateService.ts';
+import { createGenerateRouter } from './generate/generateRouter.ts';
+import { createSheetsRouter } from './generate/sheetsRouter.ts';
 
-const app = express();
+const defaultGetDeps = (): GenerateDeps => mapleGenerateDeps;
 
-app.use(cors());
-app.use(express.json());
+export function createApp(getDeps: () => GenerateDeps = defaultGetDeps) {
+  const app = express();
 
-app.use('/api/generate', generateRouter);
+  app.use(cors());
+  app.use(express.json());
 
-export default app;
+  app.use('/api/generate', createGenerateRouter(getDeps));
+  app.use('/api/sheets', createSheetsRouter(getDeps));
+
+  return app;
+}
+
+export const app = createApp();

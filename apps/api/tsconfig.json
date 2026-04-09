@@ -7,5 +7,6 @@
       "@maple/types": ["../../packages/types/src/music.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts"]
 }
