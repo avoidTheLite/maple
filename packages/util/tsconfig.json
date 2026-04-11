@@ -1,0 +1,7 @@
+{
+  "extends": "@maple/tsconfig/base.json",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
+  "include": ["src"]
+}

@@ -1,8 +1,10 @@
 import './loadEnv.ts';
+import { createLogger } from '@maple/util';
+import { env } from './config.ts';
 import { app } from './app.ts';
 
-const PORT = process.env['PORT'] ?? 3001;
+const logger = createLogger({ module: 'maple/api', level: env.LOG_LEVEL });
 
-app.listen(PORT, () => {
-  console.log(`@maple/api running on port ${PORT}`);
+app.listen(env.PORT, () => {
+  logger.info({ port: env.PORT }, '@maple/api running');
 });

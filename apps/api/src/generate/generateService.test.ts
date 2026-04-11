@@ -38,14 +38,10 @@ const minimalToolInput = {
   },
   verseAnnotation: 'VERSE',
   verseAnnotationX: 92,
-  verseRows: [
-    { chords: [{ name: 'C', x: 52 }], lyrics: [{ text: 'La', x: 52 }] },
-  ],
+  verseRows: [{ chords: [{ name: 'C', x: 52 }], lyrics: [{ text: 'La', x: 52 }] }],
   chorusAnnotation: 'CHORUS',
   chorusAnnotationX: 100,
-  chorusRows: [
-    { chords: [{ name: 'C', x: 52 }], lyrics: [{ text: 'Na', x: 52 }] },
-  ],
+  chorusRows: [{ chords: [{ name: 'C', x: 52 }], lyrics: [{ text: 'Na', x: 52 }] }],
   harmonicCols: [
     {
       title: 'I',
@@ -219,7 +215,6 @@ describe('generateSheet', () => {
   it('read mode on miss does not write cache files', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'maple-llm-'));
     try {
-      const fp = computePromptFingerprint();
       const model = 'claude-opus-4-6';
       const title = 'Read Only Miss';
       const artist = 'No Write';

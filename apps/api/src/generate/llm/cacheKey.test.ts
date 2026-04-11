@@ -24,7 +24,7 @@ describe('computeLlmCacheKey', () => {
     const fp = 'fp';
     const model = 'm';
     expect(computeLlmCacheKey(fp, model, 'Song A', 'Artist')).not.toBe(
-      computeLlmCacheKey(fp, model, 'Song B', 'Artist')
+      computeLlmCacheKey(fp, model, 'Song B', 'Artist'),
     );
   });
 });

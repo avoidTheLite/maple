@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createApp } from './app.ts';
 import { createGenerateDeps } from './generate/createGenerateDeps.ts';
 import type { GenerateDeps } from './generate/generateService.ts';
-import type { LlmMessage } from './generate/llm/types.ts';
+import type { LlmMessage } from './types.ts';
 
 /** Matches POST body for stable LLM cache key in tests. */
 const integrationTitle = 'Integration';
@@ -38,9 +38,7 @@ const toolInput = {
   chorusAnnotation: 'CHORUS',
   chorusAnnotationX: 100,
   chorusRows: [{ chords: [{ name: 'C', x: 52 }], lyrics: [{ text: 'Na', x: 52 }] }],
-  harmonicCols: [
-    { title: 'I', chords: 'C', mode: 'Major', modeDetail: '', row5: '', row6: '' },
-  ],
+  harmonicCols: [{ title: 'I', chords: 'C', mode: 'Major', modeDetail: '', row5: '', row6: '' }],
 };
 
 function integrationLlmMessage(): LlmMessage {

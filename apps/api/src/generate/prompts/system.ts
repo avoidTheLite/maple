@@ -20,7 +20,12 @@ Coordinate reference (memorise these):
 - Intro riff: tab lines at y=176,188,200,212,224,236. Bar dividers evenly space three measures across x=44–740.`;
 
 export function buildSystemPrompt(): string {
-  const instructionsPath = join(__dirname, '../../../../..', 'reference', 'maple_project_instructions.md');
+  const instructionsPath = join(
+    __dirname,
+    '../../../../..',
+    'reference',
+    'maple_project_instructions.md',
+  );
   const instructions = readFileSync(instructionsPath, 'utf-8');
   return `${instructions}${MAPLE_RENDERER_SUFFIX}`;
 }

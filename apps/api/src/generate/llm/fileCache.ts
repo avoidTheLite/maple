@@ -1,15 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { LlmMessage } from './types.ts';
+import type { LlmCacheEnvelope, LlmMessage } from '../../types.ts';
 
-export type LlmCacheEnvelope = {
-  promptFingerprint: string;
-  promptVersion: string;
-  model: string;
-  message: LlmMessage;
-};
-
-export async function readLlmCacheFile(cacheDir: string, cacheKey: string): Promise<LlmMessage | null> {
+export async function readLlmCacheFile(
+  cacheDir: string,
+  cacheKey: string,
+): Promise<LlmMessage | null> {
   const path = join(cacheDir, `${cacheKey}.json`);
   try {
     const raw = await readFile(path, 'utf-8');
@@ -25,7 +21,7 @@ export async function readLlmCacheFile(cacheDir: string, cacheKey: string): Prom
 export async function writeLlmCacheFile(
   cacheDir: string,
   cacheKey: string,
-  envelope: LlmCacheEnvelope
+  envelope: LlmCacheEnvelope,
 ): Promise<string> {
   await mkdir(cacheDir, { recursive: true });
   const path = join(cacheDir, `${cacheKey}.json`);

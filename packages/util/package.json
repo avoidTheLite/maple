@@ -1,0 +1,22 @@
+{
+  "name": "@maple/util",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "pino": "^9.6.0"
+  },
+  "devDependencies": {
+    "@maple/tsconfig": "workspace:*",
+    "@types/express": "^5.0.0",
+    "pino-pretty": "^11.3.0",
+    "typescript": "^5.2.2",
+    "vitest": "^3.0.0"
+  }
+}

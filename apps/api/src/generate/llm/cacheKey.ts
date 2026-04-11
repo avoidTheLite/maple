@@ -9,7 +9,7 @@ export function computeLlmCacheKey(
   promptFingerprint: string,
   model: string,
   title: string,
-  artist: string
+  artist: string,
 ): string {
   const body = [
     promptFingerprint,

@@ -32,7 +32,8 @@ export const SONG_DATA_TOOL: Anthropic.Tool = {
       structureLines: {
         type: 'array',
         maxItems: 3,
-        description: 'Line 1: full section sequence. Line 2: main riff/chord pattern. Line 3: chorus/pivot pattern.',
+        description:
+          'Line 1: full section sequence. Line 2: main riff/chord pattern. Line 3: chorus/pivot pattern.',
         items: { type: 'string' },
       },
       introRiff: {
@@ -55,7 +56,8 @@ export const SONG_DATA_TOOL: Anthropic.Tool = {
           doubleBarX: { type: 'number', description: 'Always 740' },
           cols: {
             type: 'array',
-            description: 'Tab columns. strings: [e, B, G, D, A, E] top→bottom. Use empty string to skip.',
+            description:
+              'Tab columns. strings: [e, B, G, D, A, E] top→bottom. Use empty string to skip.',
             items: {
               type: 'object',
               properties: {
@@ -82,7 +84,10 @@ export const SONG_DATA_TOOL: Anthropic.Tool = {
         required: ['annotation', 'chordLabels', 'barLines', 'doubleBarX', 'cols'],
       },
       verseAnnotation: { type: 'string' },
-      verseAnnotationX: { type: 'number', description: 'x position immediately after the VERSE label. Typically 92.' },
+      verseAnnotationX: {
+        type: 'number',
+        description: 'x position immediately after the VERSE label. Typically 92.',
+      },
       verseRows: {
         type: 'array',
         maxItems: 4,
@@ -118,7 +123,10 @@ export const SONG_DATA_TOOL: Anthropic.Tool = {
         },
       },
       chorusAnnotation: { type: 'string' },
-      chorusAnnotationX: { type: 'number', description: 'x position immediately after the CHORUS label. Typically 100.' },
+      chorusAnnotationX: {
+        type: 'number',
+        description: 'x position immediately after the CHORUS label. Typically 100.',
+      },
       chorusRows: {
         type: 'array',
         maxItems: 4,

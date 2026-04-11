@@ -9,8 +9,8 @@ import { join } from 'node:path';
 import { createGenerateDeps } from '../src/generate/createGenerateDeps.ts';
 import { generateSheet } from '../src/generate/generateService.ts';
 import { computeLlmCacheKey } from '../src/generate/llm/cacheKey.ts';
-import { computePromptFingerprint, PROMPT_VERSION } from '../src/generate/prompts/version.ts';
-import type { LlmMessage } from '../src/generate/llm/types.ts';
+import { computePromptFingerprint } from '../src/generate/prompts/version.ts';
+import type { LlmMessage } from '../src/types.ts';
 
 const toolInput = {
   title: 'Smoke',
@@ -38,9 +38,7 @@ const toolInput = {
   chorusAnnotation: 'CHORUS',
   chorusAnnotationX: 100,
   chorusRows: [{ chords: [{ name: 'C', x: 52 }], lyrics: [{ text: 'Na', x: 52 }] }],
-  harmonicCols: [
-    { title: 'I', chords: 'C', mode: 'Major', modeDetail: '', row5: '', row6: '' },
-  ],
+  harmonicCols: [{ title: 'I', chords: 'C', mode: 'Major', modeDetail: '', row5: '', row6: '' }],
 };
 
 function mockMessage(): LlmMessage {

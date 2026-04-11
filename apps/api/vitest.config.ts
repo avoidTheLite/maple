@@ -7,6 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   test: {
     environment: 'node',
+    globals: true,
     include: ['src/**/*.test.ts'],
     env: {
       MAPLE_LLM_CACHE: 'read',

@@ -1,6 +1,6 @@
 # Plan: LLM caching, saved SongData, prompt extraction, and testing
 
-**Status:** design / not yet implemented  
+**Status:** design / not yet implemented
 
 **Decisions:**
 
@@ -47,7 +47,7 @@
 
 ## Design principles
 
-1. **Cache key** must change when *anything material* to the model changes: not only title/artist, but **prompt version**, **model id**, **tool name/schema** (serialized), and **user message template**. Use a single exported `PROMPT_VERSION` (semver or date) plus an optional **content hash** (e.g. SHA-256 of concatenated system + tools + user template) so you do not forget to bump when editing prose.
+1. **Cache key** must change when _anything material_ to the model changes: not only title/artist, but **prompt version**, **model id**, **tool name/schema** (serialized), and **user message template**. Use a single exported `PROMPT_VERSION` (semver or date) plus an optional **content hash** (e.g. SHA-256 of concatenated system + tools + user template) so you do not forget to bump when editing prose.
 2. **Normalize** title/artist for keys (trim, collapse whitespace, case policy—document one rule, e.g. lowercased for key only).
 3. **Store** serialized API-shaped payloads (at minimum the assistant `message` JSON or the `tool_use` block you care about) so replay matches the SDK path; parsing stays identical to production.
 4. **Separate** “transport” (Anthropic SDK) from “orchestration” (build request → call LLM → extract tool input → validate) so tests mock one narrow interface.
@@ -60,17 +60,17 @@ The fingerprint must include **only** inputs that are actually sent to the API (
 
 ## Proposed layout (files)
 
-| Area | Suggested files |
-|------|-----------------|
-| Prompts | `apps/api/src/generate/prompts/` — e.g. `instructions.md` (copy or re-export from `reference/` to avoid deep relative paths), `system.ts` (composes final system string), `userMessage.ts` (`buildGenerateUserMessage({ title, artist })`), `version.ts` (`PROMPT_VERSION` + `computePromptFingerprint()`). |
-| Tool schema | `apps/api/src/generate/mapleSheetTool.ts` — `SONG_DATA_TOOL` only (imported by prompt fingerprint). |
-| LLM port | `apps/api/src/generate/llm/types.ts` + `anthropicAdapter.ts` implementing `createMessage(input) => Message` (typed from SDK or a minimal internal shape). |
-| Cache | `apps/api/src/generate/llm/fileCache.ts` — wraps the adapter: key → read/write JSON under a base dir. |
-| Service | `apps/api/src/generate/generateService.ts` — `generateSheet({ title, artist }, deps)` returns `SongData`; **also** `loadSheetFromRepo(slug)` (or similar) for file-backed sheets; future non-LLM transforms stay here. |
-| SongData validation | e.g. `apps/api/src/generate/songDataSchema.ts` — zod schema aligned with `@maple/types` `SongData`. |
-| Committed songs | e.g. `apps/api/songs/*.json` or `songs/*.json` at repo root (committed, not gitignored). |
-| Controller | Thin: validate with `generateSchema` / sheet schema, call service, map errors to HTTP. |
-| Wiring | `apps/api/src/generate/createGenerateDeps.ts` (or inline in `app.ts`) reads env: `MAPLE_LLM_CACHE=off|read|readwrite`, paths for dev vs goldens. |
+| Area                | Suggested files                                                                                                                                                                                                                                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ------------------------------------- |
+| Prompts             | `apps/api/src/generate/prompts/` — e.g. `instructions.md` (copy or re-export from `reference/` to avoid deep relative paths), `system.ts` (composes final system string), `userMessage.ts` (`buildGenerateUserMessage({ title, artist })`), `version.ts` (`PROMPT_VERSION` + `computePromptFingerprint()`). |
+| Tool schema         | `apps/api/src/generate/mapleSheetTool.ts` — `SONG_DATA_TOOL` only (imported by prompt fingerprint).                                                                                                                                                                                                         |
+| LLM port            | `apps/api/src/generate/llm/types.ts` + `anthropicAdapter.ts` implementing `createMessage(input) => Message` (typed from SDK or a minimal internal shape).                                                                                                                                                   |
+| Cache               | `apps/api/src/generate/llm/fileCache.ts` — wraps the adapter: key → read/write JSON under a base dir.                                                                                                                                                                                                       |
+| Service             | `apps/api/src/generate/generateService.ts` — `generateSheet({ title, artist }, deps)` returns `SongData`; **also** `loadSheetFromRepo(slug)` (or similar) for file-backed sheets; future non-LLM transforms stay here.                                                                                      |
+| SongData validation | e.g. `apps/api/src/generate/songDataSchema.ts` — zod schema aligned with `@maple/types` `SongData`.                                                                                                                                                                                                         |
+| Committed songs     | e.g. `apps/api/songs/*.json` or `songs/*.json` at repo root (committed, not gitignored).                                                                                                                                                                                                                    |
+| Controller          | Thin: validate with `generateSchema` / sheet schema, call service, map errors to HTTP.                                                                                                                                                                                                                      |
+| Wiring              | `apps/api/src/generate/createGenerateDeps.ts` (or inline in `app.ts`) reads env: `MAPLE_LLM_CACHE=off                                                                                                                                                                                                       | read | readwrite`, paths for dev vs goldens. |
 
 **Directories**
 
@@ -99,7 +99,7 @@ cacheKey = sha256(
 
 Filename: `{cacheKey}.json` or human-readable folder + hash suffix—your choice; hash-only avoids collisions, slug + hash is easier to browse.
 
-`promptFingerprint` = hash of: full system string + JSON-stringify(tool schemas in stable key order) + user template *with placeholders* (not filled values) so the same template still matches; **or** simpler v1: `PROMPT_VERSION` string that you bump whenever any of those change (less automatic, easier to reason about). **Recommendation:** hash for safety + keep `PROMPT_VERSION` in the JSON metadata for debugging.
+`promptFingerprint` = hash of: full system string + JSON-stringify(tool schemas in stable key order) + user template _with placeholders_ (not filled values) so the same template still matches; **or** simpler v1: `PROMPT_VERSION` string that you bump whenever any of those change (less automatic, easier to reason about). **Recommendation:** hash for safety + keep `PROMPT_VERSION` in the JSON metadata for debugging.
 
 ## Record CLI
 

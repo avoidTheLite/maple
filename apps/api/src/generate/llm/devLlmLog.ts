@@ -1,4 +1,7 @@
-import type { LlmMessage } from './types.ts';
+import { createLogger } from '@maple/util';
+import type { LlmMessage } from '../../types.ts';
+
+const logger = createLogger({ module: 'maple/api:llm', level: 'debug' });
 
 type LlmCacheModeLog = 'off' | 'read' | 'readwrite';
 
@@ -17,8 +20,9 @@ export function logLlmCacheHit(args: {
   cacheMode: LlmCacheModeLog;
 }): void {
   if (!shouldLogLlmDev()) return;
-  console.log(
-    `[maple/api] LLM cache HIT key=${shortKey(args.cacheKey)}… mode=${args.cacheMode} title=${JSON.stringify(args.title)} artist=${JSON.stringify(args.artist)}`
+  logger.debug(
+    { key: shortKey(args.cacheKey), mode: args.cacheMode, title: args.title, artist: args.artist },
+    'LLM cache HIT',
   );
 }
 
@@ -29,8 +33,9 @@ export function logLlmCacheMiss(args: {
   cacheMode: LlmCacheModeLog;
 }): void {
   if (!shouldLogLlmDev()) return;
-  console.log(
-    `[maple/api] LLM cache MISS key=${shortKey(args.cacheKey)}… mode=${args.cacheMode} title=${JSON.stringify(args.title)} artist=${JSON.stringify(args.artist)}`
+  logger.debug(
+    { key: shortKey(args.cacheKey), mode: args.cacheMode, title: args.title, artist: args.artist },
+    'LLM cache MISS',
   );
 }
 
@@ -39,20 +44,8 @@ export function logLlmUsage(message: LlmMessage): void {
   if (!shouldLogLlmDev()) return;
   const u = message.usage;
   if (!u || typeof u !== 'object') {
-    console.log('[maple/api] LLM usage: (no usage object on message)');
+    logger.debug('LLM usage: (no usage object on message)');
     return;
   }
-  const rec = u as Record<string, unknown>;
-  const parts: string[] = [];
-  for (const k of Object.keys(rec)) {
-    const v = rec[k];
-    if (typeof v === 'number') {
-      parts.push(`${k}=${v}`);
-    }
-  }
-  if (parts.length === 0) {
-    console.log('[maple/api] LLM usage:', JSON.stringify(u));
-  } else {
-    console.log(`[maple/api] LLM usage: ${parts.join(' ')}`);
-  }
+  logger.debug({ usage: u }, 'LLM usage');
 }

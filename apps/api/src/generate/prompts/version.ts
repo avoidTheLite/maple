@@ -12,6 +12,8 @@ export const PROMPT_VERSION = '1.0.0';
 export function computePromptFingerprint(): string {
   const system = buildSystemPrompt();
   const toolsJson = JSON.stringify([SONG_DATA_TOOL]);
-  const payload = [PROMPT_VERSION, system, toolsJson, GENERATE_USER_MESSAGE_TEMPLATE].join('\n---\n');
+  const payload = [PROMPT_VERSION, system, toolsJson, GENERATE_USER_MESSAGE_TEMPLATE].join(
+    '\n---\n',
+  );
   return createHash('sha256').update(payload, 'utf8').digest('hex');
 }

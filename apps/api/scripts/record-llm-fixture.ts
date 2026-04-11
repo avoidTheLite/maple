@@ -20,7 +20,7 @@ const apiRoot = join(__dirname, '..');
 
 const argv = process.argv.slice(2);
 const golden = argv.includes('--golden');
-const pos = argv.filter(a => a !== '--golden');
+const pos = argv.filter((a) => a !== '--golden');
 const title = pos[0];
 const artist = pos[1];
 

@@ -4,12 +4,12 @@
 
 Maple is a guitar sheet music generator that produces printable SVG reference pages. It is a **pnpm monorepo** managed by **Turborepo** with two apps and two shared packages:
 
-| Package | Path | Description |
-|---|---|---|
-| `@maple/client` | `apps/client` | React + Vite frontend (port 5173) |
-| `@maple/api` | `apps/api` | Express 5 backend (port 3001) |
-| `@maple/types` | `packages/types` | Shared TypeScript types |
-| `@maple/tsconfig` | `packages/tsconfig` | Shared TS base config |
+| Package           | Path                | Description                       |
+| ----------------- | ------------------- | --------------------------------- |
+| `@maple/client`   | `apps/client`       | React + Vite frontend (port 5173) |
+| `@maple/api`      | `apps/api`          | Express 5 backend (port 3001)     |
+| `@maple/types`    | `packages/types`    | Shared TypeScript types           |
+| `@maple/tsconfig` | `packages/tsconfig` | Shared TS base config             |
 
 See `reference/maple_project_instructions.md` for the full SVG design specification.
 
@@ -18,28 +18,32 @@ See `reference/maple_project_instructions.md` for the full SVG design specificat
 ### Running the dev servers
 
 Start both services concurrently:
+
 ```
 pnpm dev
 ```
+
 This runs `turbo run dev`, which starts the Vite client on port 5173 and the Express API on port 3001. The client proxies `/api` requests to the API server.
 
 ### Environment variables
 
 The API requires `ANTHROPIC_API_KEY` in the environment for live LLM generation. Create `apps/api/.env` from `apps/api/.env.example`:
+
 ```
 ANTHROPIC_API_KEY=<your key>
 PORT=3001
 ```
+
 The API loads `apps/api/.env` via `src/loadEnv.ts` (not only `process.cwd()`), so variables are picked up when Turbo runs dev from the monorepo root.
 
 **LLM file cache (dev / optional prod):**
 
-| Variable | Values | Purpose |
-|---|---|---|
-| `MAPLE_LLM_CACHE` | `off` \| `read` \| `readwrite` | Default is `readwrite` in development and `off` when `NODE_ENV=production`. |
-| `MAPLE_LLM_CACHE_DIR` | filesystem path | Override cache root; defaults to `apps/api/.llm-cache/` (gitignored). |
-| `MAPLE_LLM_MODEL` | model id | Default `claude-opus-4-6`. |
-| `MAPLE_SONGS_DIR` | filesystem path | Repo-backed `SongData` JSON directory; default `apps/api/songs/`. |
+| Variable              | Values                         | Purpose                                                                     |
+| --------------------- | ------------------------------ | --------------------------------------------------------------------------- |
+| `MAPLE_LLM_CACHE`     | `off` \| `read` \| `readwrite` | Default is `readwrite` in development and `off` when `NODE_ENV=production`. |
+| `MAPLE_LLM_CACHE_DIR` | filesystem path                | Override cache root; defaults to `apps/api/.llm-cache/` (gitignored).       |
+| `MAPLE_LLM_MODEL`     | model id                       | Default `claude-opus-4-6`.                                                  |
+| `MAPLE_SONGS_DIR`     | filesystem path                | Repo-backed `SongData` JSON directory; default `apps/api/songs/`.           |
 
 **Recording LLM goldens** (real API call; writes JSON under `apps/api/fixtures/llm/` when using `--golden`):
 
@@ -65,10 +69,10 @@ After changing prompt text, tool schema, or user message template, CI-local cach
 
 ### Build & check commands
 
-| Action | Command |
-|---|---|
-| Install deps | `pnpm install` |
-| Dev servers | `pnpm dev` |
-| Build all | `pnpm run build` |
+| Action            | Command                              |
+| ----------------- | ------------------------------------ |
+| Install deps      | `pnpm install`                       |
+| Dev servers       | `pnpm dev`                           |
+| Build all         | `pnpm run build`                     |
 | Type-check client | `cd apps/client && npx tsc --noEmit` |
-| Run tests | `pnpm test` |
+| Run tests         | `pnpm test`                          |

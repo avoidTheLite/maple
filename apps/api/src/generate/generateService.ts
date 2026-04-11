@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { SongData } from '@maple/types';
+import { createLogger } from '@maple/util';
 import { SONG_DATA_TOOL } from './mapleSheetTool.ts';
 import { buildGenerateUserMessage } from './prompts/userMessage.ts';
 import { buildSystemPrompt } from './prompts/system.ts';
@@ -8,21 +9,12 @@ import { computePromptFingerprint, PROMPT_VERSION } from './prompts/version.ts';
 import { computeLlmCacheKey } from './llm/cacheKey.ts';
 import { logLlmCacheHit, logLlmCacheMiss, logLlmUsage } from './llm/devLlmLog.ts';
 import { readLlmCacheFile, writeLlmCacheFile } from './llm/fileCache.ts';
-import type { CreateMessageParams, LlmClient, LlmMessage } from './llm/types.ts';
+import type { CreateMessageParams, GenerateDeps, LlmMessage } from '../types.ts';
 import { SongDataSchema } from './songDataSchema.ts';
 
-export type LlmCacheMode = 'off' | 'read' | 'readwrite';
+const logger = createLogger({ module: 'maple/api:generateService' });
 
-export type GenerateDeps = {
-  llm: LlmClient;
-  model: string;
-  maxTokens: number;
-  cacheMode: LlmCacheMode;
-  /** When null, file cache is disabled. */
-  cacheDir: string | null;
-  /** Directory of committed SongData JSON files (slug.json). */
-  songsDir: string;
-};
+export type { GenerateDeps, LlmCacheMode } from '../types.ts';
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -35,7 +27,7 @@ export function assertValidSongSlug(slug: string): void {
 export class SheetLoadError extends Error {
   constructor(
     message: string,
-    public readonly code: 'INVALID_SLUG' | 'NOT_FOUND' | 'INVALID_JSON' | 'VALIDATION'
+    public readonly code: 'INVALID_SLUG' | 'NOT_FOUND' | 'INVALID_JSON' | 'VALIDATION',
   ) {
     super(message);
     this.name = 'SheetLoadError';
@@ -45,7 +37,7 @@ export class SheetLoadError extends Error {
 export class LlmSheetError extends Error {
   constructor(
     message: string,
-    public readonly code: 'NO_TOOL_USE' | 'VALIDATION' | 'UPSTREAM'
+    public readonly code: 'NO_TOOL_USE' | 'VALIDATION' | 'UPSTREAM',
   ) {
     super(message);
     this.name = 'LlmSheetError';
@@ -61,7 +53,7 @@ export function parseSongData(raw: unknown): SongData {
 }
 
 function extractSongDataFromMessage(message: LlmMessage): SongData {
-  const toolUse = message.content.find(b => b.type === 'tool_use');
+  const toolUse = message.content.find((b) => b.type === 'tool_use');
   if (!toolUse || toolUse.type !== 'tool_use') {
     throw new LlmSheetError('Model did not return structured sheet data.', 'NO_TOOL_USE');
   }
@@ -75,7 +67,12 @@ function extractSongDataFromMessage(message: LlmMessage): SongData {
   }
 }
 
-function buildCreateMessageParams(title: string, artist: string, model: string, maxTokens: number): CreateMessageParams {
+function buildCreateMessageParams(
+  title: string,
+  artist: string,
+  model: string,
+  maxTokens: number,
+): CreateMessageParams {
   return {
     model,
     max_tokens: maxTokens,
@@ -93,7 +90,7 @@ function buildCreateMessageParams(title: string, artist: string, model: string, 
 
 export async function generateSheet(
   { title, artist }: { title: string; artist: string },
-  deps: GenerateDeps
+  deps: GenerateDeps,
 ): Promise<SongData> {
   const promptFingerprint = computePromptFingerprint();
   const cacheKey = computeLlmCacheKey(promptFingerprint, deps.model, title, artist);
@@ -113,7 +110,7 @@ export async function generateSheet(
     try {
       message = await deps.llm.createMessage(params);
     } catch (e) {
-      console.error(e);
+      logger.error({ err: e }, 'LLM request failed');
       throw new LlmSheetError('Failed to generate sheet.', 'UPSTREAM');
     }
 
@@ -132,7 +129,10 @@ export async function generateSheet(
   return extractSongDataFromMessage(message);
 }
 
-export async function loadSheetFromRepo(slug: string, deps: Pick<GenerateDeps, 'songsDir'>): Promise<SongData> {
+export async function loadSheetFromRepo(
+  slug: string,
+  deps: Pick<GenerateDeps, 'songsDir'>,
+): Promise<SongData> {
   assertValidSongSlug(slug);
   const path = join(deps.songsDir, `${slug}.json`);
   let rawText: string;

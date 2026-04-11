@@ -40,7 +40,7 @@ const IntroRiffSchema = z.object({
         x: z.number(),
         y: z.number(),
         small: z.boolean().optional(),
-      })
+      }),
     )
     .optional(),
 });

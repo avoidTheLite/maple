@@ -11,6 +11,7 @@ Always follow the visual design rules and structural patterns defined below exac
 A Maple sheet is a single SVG page formatted for **A4 paper (794 × 1122px)**. It encodes one song in a layered format matching the Maple binder's physical tier system and is designed to be printed and inserted into a 3-ring binder sleeve.
 
 Page 1 contains, in order:
+
 1. Song metadata header
 2. Chord diagrams + song structure map
 3. Intro riff tab (if the song has one)
@@ -37,49 +38,155 @@ Safe content area: `x=48` to `x=740` (692px wide)
 ### CSS Classes (include all in every file)
 
 ```css
-.bg   { fill: #FDF6E8; }
-.tline{ stroke: #7A5C10; stroke-width: 0.65; opacity: 0.45; }
-.bar  { stroke: #8B6914; stroke-width: 0.9;  opacity: 0.45; }
-.bar2 { stroke: #8B6914; stroke-width: 2;    opacity: 0.55; }
-.div  { stroke: #A07828; stroke-width: 0.4;  opacity: 0.35; stroke-dasharray: 3,4; }
-.sec  { font-family: Georgia, serif; font-size: 10px; fill: #6B4C0A; opacity: 0.75; letter-spacing: 1.8px; }
-.hl   { font-family: Georgia, serif; font-size: 8.5px; fill: #5A3C0A; font-style: italic; }
-.ttl  { font-family: Georgia, serif; font-size: 15px; fill: #4A3008; font-weight: bold; }
-.sub  { font-family: Georgia, serif; font-size: 10px; fill: #7A5C10; letter-spacing: 1px; }
-.met  { font-family: Georgia, serif; font-size: 9px;  fill: #2A1A00; }
-.chn  { font-family: Georgia, serif; font-size: 10px; fill: #4A2800; font-weight: bold; }
-.lyr  { font-family: Georgia, serif; font-size: 10px; fill: #2A1A00; }
-.tn   { font-family: Georgia, serif; font-size: 9px;  fill: #2A1A00; }
-.sl   { font-family: Georgia, serif; font-size: 8px;  fill: #8B6914; opacity: 0.65; }
-.cbox { fill: #FFF8EE; stroke: #B08030; stroke-width: 0.8; }
-.cdot { fill: #4A2800; }
-.csub { font-family: Georgia, serif; font-size: 8px; fill: #5A3C0A; }
-.fl   { stroke: #8B6914; stroke-width: 0.5; opacity: 0.5; }
-.nut  { stroke: #4A2800; stroke-width: 1.5; opacity: 0.7; }
-.pv   { fill: #FFE0A0; stroke: #C09040; stroke-width: 0.7; opacity: 0.8; }
-.pf   { font-family: Georgia, serif; font-size: 8px; fill: #8B6914; opacity: 0.45; letter-spacing: 3px; }
-.rowsep { stroke: #8B6914; stroke-width: 0.3; opacity: 0.15; }
-.blk  { fill: #E8F0FF; stroke: #A0B0D0; stroke-width: 0.5; opacity: 0.25; }
-.blkl { font-family: Georgia, serif; font-size: 8px; fill: #6080A0; opacity: 0.5; letter-spacing: 1px; }
+.bg {
+  fill: #fdf6e8;
+}
+.tline {
+  stroke: #7a5c10;
+  stroke-width: 0.65;
+  opacity: 0.45;
+}
+.bar {
+  stroke: #8b6914;
+  stroke-width: 0.9;
+  opacity: 0.45;
+}
+.bar2 {
+  stroke: #8b6914;
+  stroke-width: 2;
+  opacity: 0.55;
+}
+.div {
+  stroke: #a07828;
+  stroke-width: 0.4;
+  opacity: 0.35;
+  stroke-dasharray: 3, 4;
+}
+.sec {
+  font-family: Georgia, serif;
+  font-size: 10px;
+  fill: #6b4c0a;
+  opacity: 0.75;
+  letter-spacing: 1.8px;
+}
+.hl {
+  font-family: Georgia, serif;
+  font-size: 8.5px;
+  fill: #5a3c0a;
+  font-style: italic;
+}
+.ttl {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  fill: #4a3008;
+  font-weight: bold;
+}
+.sub {
+  font-family: Georgia, serif;
+  font-size: 10px;
+  fill: #7a5c10;
+  letter-spacing: 1px;
+}
+.met {
+  font-family: Georgia, serif;
+  font-size: 9px;
+  fill: #2a1a00;
+}
+.chn {
+  font-family: Georgia, serif;
+  font-size: 10px;
+  fill: #4a2800;
+  font-weight: bold;
+}
+.lyr {
+  font-family: Georgia, serif;
+  font-size: 10px;
+  fill: #2a1a00;
+}
+.tn {
+  font-family: Georgia, serif;
+  font-size: 9px;
+  fill: #2a1a00;
+}
+.sl {
+  font-family: Georgia, serif;
+  font-size: 8px;
+  fill: #8b6914;
+  opacity: 0.65;
+}
+.cbox {
+  fill: #fff8ee;
+  stroke: #b08030;
+  stroke-width: 0.8;
+}
+.cdot {
+  fill: #4a2800;
+}
+.csub {
+  font-family: Georgia, serif;
+  font-size: 8px;
+  fill: #5a3c0a;
+}
+.fl {
+  stroke: #8b6914;
+  stroke-width: 0.5;
+  opacity: 0.5;
+}
+.nut {
+  stroke: #4a2800;
+  stroke-width: 1.5;
+  opacity: 0.7;
+}
+.pv {
+  fill: #ffe0a0;
+  stroke: #c09040;
+  stroke-width: 0.7;
+  opacity: 0.8;
+}
+.pf {
+  font-family: Georgia, serif;
+  font-size: 8px;
+  fill: #8b6914;
+  opacity: 0.45;
+  letter-spacing: 3px;
+}
+.rowsep {
+  stroke: #8b6914;
+  stroke-width: 0.3;
+  opacity: 0.15;
+}
+.blk {
+  fill: #e8f0ff;
+  stroke: #a0b0d0;
+  stroke-width: 0.5;
+  opacity: 0.25;
+}
+.blkl {
+  font-family: Georgia, serif;
+  font-size: 8px;
+  fill: #6080a0;
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
 ```
 
 ### Colours Reference
 
-| Element | Fill / Stroke |
-|---|---|
-| Parchment background | `#FDF6E8` |
-| Binding stripe (outer) | `#C17F2A` |
-| Binding stripe (inner) | `#D4942F` |
-| Staff / bar lines | `#8B6914` |
-| Tab lines | `#7A5C10` |
-| Section dividers | `#A07828` |
-| Chord box fill | `#FFF8EE` |
-| Chord box stroke | `#B08030` |
-| Chord dots | `#4A2800` |
-| Pivot highlight fill | `#FFE0A0` |
-| Pivot highlight stroke | `#C09040` |
-| Harmonic map col divider | `#C09040` |
-| Notes lines | `#8B6914` |
+| Element                  | Fill / Stroke |
+| ------------------------ | ------------- |
+| Parchment background     | `#FDF6E8`     |
+| Binding stripe (outer)   | `#C17F2A`     |
+| Binding stripe (inner)   | `#D4942F`     |
+| Staff / bar lines        | `#8B6914`     |
+| Tab lines                | `#7A5C10`     |
+| Section dividers         | `#A07828`     |
+| Chord box fill           | `#FFF8EE`     |
+| Chord box stroke         | `#B08030`     |
+| Chord dots               | `#4A2800`     |
+| Pivot highlight fill     | `#FFE0A0`     |
+| Pivot highlight stroke   | `#C09040`     |
+| Harmonic map col divider | `#C09040`     |
+| Notes lines              | `#8B6914`     |
 
 ---
 
@@ -108,29 +215,30 @@ Band boundaries: `y = 0, 140, 281, 421, 562, 702, 842, 982, 1122`
 
 Default Page 1 band allocation:
 
-| Band(s) | y range | Ratio | Content |
-|---|---|---|---|
-| 1 | 0–140 | 1/8 | Front-matter + chords + structure |
-| 2 | 140–281 | 1/8 | Intro riff tab |
-| 3–4 | 281–562 | 1/4 | Verse |
-| 5–6 | 421–562 + 562–702... | 1/4 | Chorus |
-| 5 | 562–702 | 1/8 | Harmonic map |
-| 6–8 | 702–1122 | 3/8 | Notes + footer |
+| Band(s) | y range              | Ratio | Content                           |
+| ------- | -------------------- | ----- | --------------------------------- |
+| 1       | 0–140                | 1/8   | Front-matter + chords + structure |
+| 2       | 140–281              | 1/8   | Intro riff tab                    |
+| 3–4     | 281–562              | 1/4   | Verse                             |
+| 5–6     | 421–562 + 562–702... | 1/4   | Chorus                            |
+| 5       | 562–702              | 1/8   | Harmonic map                      |
+| 6–8     | 702–1122             | 3/8   | Notes + footer                    |
 
 **Correct band sequence:**
 
-| Band | y start | y end | Content |
-|---|---|---|---|
-| 1 | 0 | 140 | Front-matter + chords + structure |
-| 2 | 140 | 281 | Intro riff tab |
-| 3 | 281 | 421 | Verse (1/4 page) |
-| 4 | 421 | 562 | Chorus (1/4 page) |
-| 5 | 562 | 702 | Harmonic map |
-| 6–8 | 702 | 1122 | Notes + footer |
+| Band | y start | y end | Content                           |
+| ---- | ------- | ----- | --------------------------------- |
+| 1    | 0       | 140   | Front-matter + chords + structure |
+| 2    | 140     | 281   | Intro riff tab                    |
+| 3    | 281     | 421   | Verse (1/4 page)                  |
+| 4    | 421     | 562   | Chorus (1/4 page)                 |
+| 5    | 562     | 702   | Harmonic map                      |
+| 6–8  | 702     | 1122  | Notes + footer                    |
 
 ### Section Header Clearance Rule — NON-NEGOTIABLE
 
 Every section label (.sec) **claims 20px from the top of its band** before any content begins:
+
 - The label baseline sits 14px below the band top
 - Content (diagrams, tab lines, chord rows) starts 6px below the label baseline = **20px from band top**
 
@@ -141,6 +249,7 @@ This applies to all bands. The chord diagram name labels (rendered above the rec
 ## Band 1: Front-matter + Chords + Structure (y=0–140)
 
 ### Header block (y=0–52)
+
 ```
 y=22   Song title       .ttl  x=48
 y=35   Artist · Album   .sub  x=48
@@ -152,9 +261,10 @@ y=52   Full rule        x=48 to x=740   stroke=#A07828 w=0.5 opacity=0.4
 ```
 
 ### Chord + Structure block (y=52–140)
+
 ```
 y=62   "CHORDS USED"    .sec  x=48
-y=76   Chord diagrams   (band_top + 20 = 0 + 20... wait: sec label at y=62 = band_top+62... 
+y=76   Chord diagrams   (band_top + 20 = 0 + 20... wait: sec label at y=62 = band_top+62...
                          correct: diagrams at y=76, which is 14px below sec label baseline)
 y=62   "STRUCTURE"      .sec  x=260
 y=76   Structure box    rect x=258 w=476 h=58 .cbox rx=3
@@ -184,11 +294,13 @@ String column order left to right = low E (x=4), A (x=10), D (x=16), G (x=22), B
 Fret row centres: nut=7, fret1=11, fret2=19, fret3=27, fret4=35.
 
 Diagram x positions (gap=6px between diagrams, first at x=52):
+
 - Chord 1: x=52, Chord 2: x=100, Chord 3: x=148, Chord 4: x=196, Chord 5: x=244
 
 ### Chord Section Reflow
 
 Count chords before rendering:
+
 - **≤ 5 chords** — diagrams left side (up to x=244), structure box right side (x=258)
 - **6–10 chords** — diagrams span full width using smaller diagrams (w=32), structure box drops to second sub-row within the band
 - **> 10 chords** — two diagram rows; structure box below both
@@ -245,11 +357,11 @@ next row starts     at row_top + 30
 Four rows in 120px (281+20=301 content start, 4×30=120, ends at 421 ✓):
 
 | Row | Chord y | Lyric y | Sep y |
-|---|---|---|---|
-| 1 | 314 | 326 | 330 |
-| 2 | 344 | 356 | 360 |
-| 3 | 374 | 386 | 390 |
-| 4 | 404 | 416 | — |
+| --- | ------- | ------- | ----- |
+| 1   | 314     | 326     | 330   |
+| 2   | 344     | 356     | 360   |
+| 3   | 374     | 386     | 390   |
+| 4   | 404     | 416     | —     |
 
 Position chord names at the x coordinate where that chord begins in the measure. Two measures of 4/4 across 692px = 346px per measure. Chord names use .chn class.
 
@@ -269,11 +381,11 @@ Content starts at y=441 (434 + 7... use 434+20=454? No — sec label at 434 mean
 Same Mode A row layout as Verse. Four rows:
 
 | Row | Chord y | Lyric y | Sep y |
-|---|---|---|---|
-| 1 | 441 | 453 | 457 |
-| 2 | 471 | 483 | 487 |
-| 3 | 501 | 513 | 517 |
-| 4 | 531 | 543 | — |
+| --- | ------- | ------- | ----- |
+| 1   | 441     | 453     | 457   |
+| 2   | 471     | 483     | 487   |
+| 3   | 501     | 513     | 517   |
+| 4   | 531     | 543     | —     |
 
 ### Pivot Chord Annotation
 
@@ -305,6 +417,7 @@ col dividers:  stroke=#C09040 stroke-width=0.5 opacity=0.4
 ```
 
 Each column (left edge = box_left + col_index × col_width + 12px padding):
+
 ```
 y=600  section name     .met  font-weight:bold
 y=615  chord sequence   .met
@@ -329,6 +442,7 @@ y=715  Section label    .sec  "NOTES"  x=48
 `stroke=#8B6914 stroke-width=0.4 opacity=0.22 x1=48 x2=740`
 
 Footer:
+
 ```
 y=1103  Rule line    x1=48 x2=740   stroke=#A07828 w=0.4 opacity=0.35
 y=1115  "maple"      .pf  x=48
@@ -354,13 +468,16 @@ Include when producing layout review versions. Omit for final print output.
 ## Lyric Row Modes Reference
 
 ### Mode A (default — chord + lyric, no staff)
+
 Row height = 30px. Use for all acoustic/vocal songs and any chord-based section.
 
 ### Mode B (staff + chord + lyric)
+
 Row height = 92px. Use when rhythm notation or strumming pattern must be shown.
 Stack: chord (12) + gap (8) + 5 staff lines (40) + gap (14) + lyric (12) + sep (6) = 92px.
 
 ### Mode C (tab only)
+
 Row height = 106px. Use for intro riffs, electric rhythm figures, solo references.
 Stack: chord labels (12) + gap (8) + 6 tab lines (72) + technique note (14) = 106px.
 
@@ -369,15 +486,19 @@ Stack: chord labels (12) + gap (8) + 6 tab lines (72) + technique note (14) = 10
 ## Input Handling
 
 ### Song name only
+
 Use your knowledge to fill in the schema. State all assumptions (key, chords, structure, mode) before rendering. Ask for corrections before generating the SVG.
 
 ### ASCII tab or text chord sheet
+
 Extract: title, artist, key, tempo, tuning, capo, section labels, chord names, lyric lines with chord positions. Ask for any missing fields.
 
 ### Guitar Pro file
+
 Extract in order: song metadata → section markers → chord annotations (if present) → lyrics → rhythm guitar track first measure → lead/solo track reference. If chord annotations absent, request chord names per section before rendering.
 
 ### Manual schema
+
 Accept the SONG / SECTIONS / CHORDS / LYRICS / TAB_FIGURES / HARMONIC_STATES object format from the Maple Framework Summary. Render directly.
 
 ---
@@ -398,6 +519,7 @@ Accept the SONG / SECTIONS / CHORDS / LYRICS / TAB_FIGURES / HARMONIC_STATES obj
 ## What Page 1 Is NOT
 
 Page 1 does not contain:
+
 - Full solo tab (Page 2 / fold-out)
 - Bridge section unless it fits within available rows
 - Alternate voicings, theory deep-dives, or fretboard diagrams
@@ -442,6 +564,6 @@ Band layout:
 
 ---
 
-*Maple Project Instructions · v0.1*
-*References: maple_framework_summary.md*
-*Canonical SVG: maple_kenny_wayne_shepherd_blue_on_black_p1.svg*
+_Maple Project Instructions · v0.1_
+_References: maple_framework_summary.md_
+_Canonical SVG: maple_kenny_wayne_shepherd_blue_on_black_p1.svg_
