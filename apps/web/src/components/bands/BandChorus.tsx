@@ -1,6 +1,6 @@
 import type { LyricRow } from '@maple/types';
 
-const BAND_TOP = 421;
+const BAND_TOP = 475;
 const LABEL_Y = BAND_TOP + 13;
 const CONTENT_Y = LABEL_Y + 16;
 const ROW_HEIGHT = 34;
@@ -63,6 +63,6 @@ export const BandChorus = ({
       );
     })}
 
-    <line x1="48" y1="560" x2="740" y2="560" className="div" />
+    <line x1="48" y1="614" x2="740" y2="614" className="div" />
   </>
 );

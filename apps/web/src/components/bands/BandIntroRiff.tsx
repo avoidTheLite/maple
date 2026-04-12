@@ -1,6 +1,6 @@
 import type { IntroRiffData } from '@maple/types';
 
-const TAB_LINE_Y = [176, 188, 200, 212, 224, 236];
+const TAB_LINE_Y = [230, 242, 254, 266, 278, 290];
 const STRING_LABELS = ['e', 'B', 'G', 'D', 'A', 'E'];
 
 interface BandIntroRiffProps {
@@ -12,15 +12,15 @@ export const BandIntroRiff = ({ data }: BandIntroRiffProps): React.JSX.Element =
 
   return (
     <>
-      <text x="48" y="153" className="sec">
+      <text x="48" y="207" className="sec">
         INTRO RIFF{' '}
       </text>
-      <text x="118" y="153" className="hl">
+      <text x="118" y="207" className="hl">
         {annotation}
       </text>
 
       {chordLabels.map((cl) => (
-        <text key={cl.text} x={cl.x} y="165" className="chn">
+        <text key={cl.text} x={cl.x} y="219" className="chn">
           {cl.text}
         </text>
       ))}
@@ -68,7 +68,7 @@ export const BandIntroRiff = ({ data }: BandIntroRiffProps): React.JSX.Element =
         </text>
       ))}
 
-      <line x1="48" y1="279" x2="740" y2="279" className="div" />
+      <line x1="48" y1="333" x2="740" y2="333" className="div" />
     </>
   );
 };

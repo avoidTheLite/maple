@@ -28,9 +28,9 @@ const BlueOnBlack: SongData = {
     { name: 'A', frets: [-1, 0, 2, 2, 2, 0] },
   ],
   structureLines: [
-    'Intro  →  Verse 1  →  Chorus  →  Verse 2  →  Chorus  →  Solo  →  Outro',
-    'Main riff:  D – Cadd9 – G  ( × 4 per verse )',
-    'Chorus:  D – C – G  then  A – G  ( V pivot ) → D',
+    'Intro → V1 → Ch → V2 → Ch → Solo → Outro',
+    'Riff: D – Cadd9 – G',
+    'Ch: D – C – G  ·  A–G→D',
   ],
   introRiff: {
     annotation: '× 2  — same pattern as verse backbone',
@@ -49,7 +49,7 @@ const BlueOnBlack: SongData = {
       { x: 485, strings: ['', '', '', '', '0h2', ''] },
       { x: 540, strings: ['', '', '', '', '', '3b'] },
     ],
-    extraAnnotations: [{ text: '↑ bend to pitch', x: 540, y: 252, small: true }],
+    extraAnnotations: [{ text: '↑ bend to pitch', x: 540, y: 306, small: true }],
   },
   verseAnnotation: 'D – Cadd9 – G  ( × 4 )',
   verseAnnotationX: 92,

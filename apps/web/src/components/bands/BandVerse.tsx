@@ -1,6 +1,6 @@
 import type { LyricRow } from '@maple/types';
 
-const BAND_TOP = 281;
+const BAND_TOP = 335;
 const LABEL_Y = BAND_TOP + 13;
 const CONTENT_Y = LABEL_Y + 16;
 const ROW_HEIGHT = 34;
@@ -42,6 +42,6 @@ export const BandVerse = ({ annotation, annotationX, rows }: BandVerseProps): Re
       );
     })}
 
-    <line x1="48" y1="419" x2="740" y2="419" className="div" />
+    <line x1="48" y1="473" x2="740" y2="473" className="div" />
   </>
 );

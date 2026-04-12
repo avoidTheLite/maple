@@ -1,8 +1,9 @@
 export const A4_WIDTH = 794;
 export const A4_HEIGHT = 1122;
-export const BAND_TOPS = [0, 140, 281, 421, 562, 702, 842, 982];
+export const BAND_TOPS = [0, 194, 335, 475, 616, 756, 896, 1036];
 export const SAFE_X_START = 48;
 export const SAFE_X_END = 740;
+export const HEADER_DIVIDER_Y = 192;
 
 export const COLORS = {
   parchment: '#FDF6E8',

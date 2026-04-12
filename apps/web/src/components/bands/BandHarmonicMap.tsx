@@ -1,11 +1,11 @@
 import type { HarmonicCol } from '@maple/types';
 
-const LABEL_Y = 575;
-const BOX_Y = 582;
+const LABEL_Y = 629;
+const BOX_Y = 636;
 const BOX_H = 108;
 const COL_DIVIDERS_X = [221, 394, 567];
 const COL_X = [60, 232, 406, 578];
-const ROW_Y = [600, 614, 628, 640, 654, 666, 680];
+const ROW_Y = [654, 668, 682, 694, 708, 720, 734];
 
 interface BandHarmonicMapProps {
   cols: HarmonicCol[];
@@ -67,6 +67,6 @@ export const BandHarmonicMap = ({ cols }: BandHarmonicMapProps): React.JSX.Eleme
       );
     })}
 
-    <line x1="48" y1="700" x2="740" y2="700" className="div" />
+    <line x1="48" y1="754" x2="740" y2="754" className="div" />
   </>
 );

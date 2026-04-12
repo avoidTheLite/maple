@@ -1,7 +1,7 @@
-const LABEL_Y = 715;
-const FIRST_LINE_Y = 728;
-const LINE_SPACING = 24;
-const LINE_COUNT = 16;
+const LABEL_Y = 769;
+const FIRST_LINE_Y = 782;
+const LINE_SPACING = 22;
+const LINE_COUNT = 14;
 
 interface BandNotesProps {
   title: string;
