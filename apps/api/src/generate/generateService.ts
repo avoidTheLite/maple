@@ -10,7 +10,8 @@ import { computeLlmCacheKey } from './llm/cacheKey.ts';
 import { logLlmCacheHit, logLlmCacheMiss, logLlmUsage } from './llm/devLlmLog.ts';
 import { readLlmCacheFile, writeLlmCacheFile } from './llm/fileCache.ts';
 import type { CreateMessageParams, GenerateDeps, LlmMessage } from '../types.ts';
-import { SongDataSchema } from './songDataSchema.ts';
+import { LlmSongDataSchema, SongDataSchema } from './songDataSchema.ts';
+import { resolveVoicings } from './chords/voicingResolver.ts';
 
 const logger = createLogger({ module: 'maple/api:generateService' });
 
@@ -57,8 +58,19 @@ function extractSongDataFromMessage(message: LlmMessage): SongData {
   if (!toolUse || toolUse.type !== 'tool_use') {
     throw new LlmSheetError('Model did not return structured sheet data.', 'NO_TOOL_USE');
   }
+  // Parse with the lenient LLM schema (chords.frets optional).
+  const llmParsed = LlmSongDataSchema.safeParse(toolUse.input);
+  if (!llmParsed.success) {
+    throw new LlmSheetError('Model returned invalid sheet data.', 'VALIDATION');
+  }
+  // Resolve chord voicings: dictionary takes priority, LLM frets are the fallback.
+  const enriched = {
+    ...llmParsed.data,
+    chords: resolveVoicings(llmParsed.data.chords),
+  };
+  // Final strict validation now that all chords have frets.
   try {
-    return parseSongData(toolUse.input);
+    return parseSongData(enriched);
   } catch (e) {
     if (e instanceof SheetLoadError && e.code === 'VALIDATION') {
       throw new LlmSheetError(e.message, 'VALIDATION');

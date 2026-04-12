@@ -56,6 +56,44 @@ const HarmonicColSchema = z.object({
   pageRef: z.string().optional(),
 });
 
+/**
+ * Lenient schema for raw LLM output — chord frets are optional because the
+ * voicing resolver fills them in from the dictionary after extraction.
+ */
+const LlmChordSchema = z.object({
+  name: z.string(),
+  frets: z.array(z.number()).length(6).optional(),
+});
+
+export const LlmSongDataSchema = z
+  .object({
+    title: z.string(),
+    artist: z.string(),
+    album: z.string(),
+    year: z.string(),
+    key: z.string(),
+    tempo: z.string(),
+    timeSig: z.string(),
+    tuning: z.string(),
+    capo: z.string(),
+    mode: z.string(),
+    chords: z.array(LlmChordSchema),
+    structureLines: z.array(z.string()),
+    introRiff: IntroRiffSchema,
+    verseAnnotation: z.string(),
+    verseAnnotationX: z.number(),
+    verseRows: z.array(LyricRowSchema),
+    chorusAnnotation: z.string(),
+    chorusAnnotationX: z.number(),
+    chorusRows: z.array(LyricRowSchema),
+    harmonicCols: z.array(HarmonicColSchema),
+    layoutTemplateId: z.string().optional(),
+    songSchemaVersion: z.union([z.string(), z.number()]).optional(),
+  })
+  .passthrough();
+
+export type LlmSongDataInput = z.infer<typeof LlmSongDataSchema>;
+
 export const SongDataSchema = z.object({
   title: z.string(),
   artist: z.string(),

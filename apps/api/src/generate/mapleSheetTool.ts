@@ -18,15 +18,21 @@ export const SONG_DATA_TOOL: Anthropic.Tool = {
       mode: { type: 'string', description: "e.g. 'A natural minor / A pentatonic minor'" },
       chords: {
         type: 'array',
-        maxItems: 5,
-        description: 'frets: [E, A, D, G, B, e] low→high. -1=muted, 0=open, 1-4=fret number.',
+        description:
+          'Chords used in the song. Provide the name only — voicings for common chords are resolved automatically. Only include frets for unusual chords not found in a standard open-position dictionary.',
         items: {
           type: 'object',
           properties: {
-            name: { type: 'string' },
-            frets: { type: 'array', items: { type: 'number' }, minItems: 6, maxItems: 6 },
+            name: { type: 'string', description: "e.g. 'D', 'Cadd9', 'F#m'" },
+            frets: {
+              type: 'array',
+              items: { type: 'number' },
+              minItems: 6,
+              maxItems: 6,
+              description: 'Optional. [E, A, D, G, B, e] low→high. -1=muted, 0=open.',
+            },
           },
-          required: ['name', 'frets'],
+          required: ['name'],
         },
       },
       structureLines: {
