@@ -1,55 +1,58 @@
 import type { IntroRiffData } from '@maple/types';
 
-const TAB_LINE_Y = [230, 242, 254, 266, 278, 290];
-const STRING_LABELS = ['e', 'B', 'G', 'D', 'A', 'E'];
+// Offsets relative to the section's own top (y prop).
+const LABEL_OFFSET = 15;
+const CHORD_LABEL_OFFSET = 27;
+// extraAnnotations.y values are relative to this section's top.
+const TAB_LINE_OFFSETS = [38, 50, 62, 74, 86, 98] as const;
+const DIVIDER_OFFSET = 141;
+
+const STRING_LABELS = ['e', 'B', 'G', 'D', 'A', 'E'] as const;
 
 interface BandIntroRiffProps {
   data: IntroRiffData;
+  y: number;
 }
 
-export const BandIntroRiff = ({ data }: BandIntroRiffProps): React.JSX.Element => {
+export const BandIntroRiff = ({ data, y }: BandIntroRiffProps): React.JSX.Element => {
   const { annotation, chordLabels, barLines, doubleBarX, cols, extraAnnotations } = data;
+
+  const tabY = TAB_LINE_OFFSETS.map((o) => y + o);
 
   return (
     <>
-      <text x="48" y="207" className="sec">
+      <text x="48" y={y + LABEL_OFFSET} className="sec">
         INTRO RIFF{' '}
       </text>
-      <text x="118" y="207" className="hl">
+      <text x="118" y={y + LABEL_OFFSET} className="hl">
         {annotation}
       </text>
 
       {chordLabels.map((cl) => (
-        <text key={cl.text} x={cl.x} y="219" className="chn">
+        <text key={cl.text} x={cl.x} y={y + CHORD_LABEL_OFFSET} className="chn">
           {cl.text}
         </text>
       ))}
 
       {STRING_LABELS.map((label, i) => (
-        <text key={label} x="42" y={TAB_LINE_Y[i] + 3} textAnchor="end" className="sl">
+        <text key={label} x="42" y={tabY[i] + 3} textAnchor="end" className="sl">
           {label}
         </text>
       ))}
 
-      {TAB_LINE_Y.map((y) => (
-        <line key={y} x1="44" y1={y} x2="740" y2={y} className="tline" />
+      {tabY.map((ty) => (
+        <line key={ty} x1="44" y1={ty} x2="740" y2={ty} className="tline" />
       ))}
 
       {barLines.map((x) => (
-        <line key={x} x1={x} y1={TAB_LINE_Y[0]} x2={x} y2={TAB_LINE_Y[5]} className="bar" />
+        <line key={x} x1={x} y1={tabY[0]} x2={x} y2={tabY[5]} className="bar" />
       ))}
-      <line
-        x1={doubleBarX}
-        y1={TAB_LINE_Y[0]}
-        x2={doubleBarX}
-        y2={TAB_LINE_Y[5]}
-        className="bar2"
-      />
+      <line x1={doubleBarX} y1={tabY[0]} x2={doubleBarX} y2={tabY[5]} className="bar2" />
 
       {cols.map((col, ci) =>
         col.strings.map((val, si) =>
           val !== '' ? (
-            <text key={`${ci}-${si}`} x={col.x} y={TAB_LINE_Y[si] + 3} className="tn">
+            <text key={`${ci}-${si}`} x={col.x} y={tabY[si] + 3} className="tn">
               {String(val)}
             </text>
           ) : null,
@@ -60,7 +63,7 @@ export const BandIntroRiff = ({ data }: BandIntroRiffProps): React.JSX.Element =
         <text
           key={i}
           x={ann.x}
-          y={ann.y}
+          y={y + ann.y}
           className="hl"
           style={ann.small ? { fontSize: '7px' } : undefined}
         >
@@ -68,7 +71,7 @@ export const BandIntroRiff = ({ data }: BandIntroRiffProps): React.JSX.Element =
         </text>
       ))}
 
-      <line x1="48" y1="333" x2="740" y2="333" className="div" />
+      <line x1="48" y1={y + DIVIDER_OFFSET} x2="740" y2={y + DIVIDER_OFFSET} className="div" />
     </>
   );
 };

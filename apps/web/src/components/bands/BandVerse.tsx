@@ -1,27 +1,28 @@
 import type { LyricRow } from '@maple/types';
 
-const BAND_TOP = 335;
-const LABEL_Y = BAND_TOP + 13;
-const CONTENT_Y = LABEL_Y + 16;
+const LABEL_OFFSET = 13;
+const CONTENT_OFFSET = 29;
 const ROW_HEIGHT = 34;
+const DIVIDER_OFFSET = 138;
 
 interface BandVerseProps {
   annotation: string;
   annotationX: number;
   rows: LyricRow[];
+  y: number;
 }
 
-export const BandVerse = ({ annotation, annotationX, rows }: BandVerseProps): React.JSX.Element => (
+export const BandVerse = ({ annotation, annotationX, rows, y }: BandVerseProps): React.JSX.Element => (
   <>
-    <text x="48" y={LABEL_Y} className="sec">
+    <text x="48" y={y + LABEL_OFFSET} className="sec">
       VERSE{' '}
     </text>
-    <text x={annotationX} y={LABEL_Y} className="hl">
+    <text x={annotationX} y={y + LABEL_OFFSET} className="hl">
       {annotation}
     </text>
 
     {rows.map((row, ri) => {
-      const chordY = CONTENT_Y + ri * ROW_HEIGHT;
+      const chordY = y + CONTENT_OFFSET + ri * ROW_HEIGHT;
       const lyricY = chordY + 14;
       const sepY = chordY + 18;
 
@@ -42,6 +43,6 @@ export const BandVerse = ({ annotation, annotationX, rows }: BandVerseProps): Re
       );
     })}
 
-    <line x1="48" y1="473" x2="740" y2="473" className="div" />
+    <line x1="48" y1={y + DIVIDER_OFFSET} x2="740" y2={y + DIVIDER_OFFSET} className="div" />
   </>
 );

@@ -9,6 +9,13 @@ import { BandChorus } from './components/bands/BandChorus.tsx';
 import { BandHarmonicMap } from './components/bands/BandHarmonicMap.tsx';
 import { BandNotes } from './components/bands/BandNotes.tsx';
 import { SongSearch } from './components/SongSearch.tsx';
+import {
+  BAND_CHORUS_HEIGHT,
+  BAND_HARMONIC_MAP_HEIGHT,
+  BAND_HEADER_HEIGHT,
+  BAND_INTRO_RIFF_HEIGHT,
+  BAND_VERSE_HEIGHT,
+} from './constants/layout.ts';
 
 const BlueOnBlack: SongData = {
   title: 'Blue on Black',
@@ -49,7 +56,7 @@ const BlueOnBlack: SongData = {
       { x: 485, strings: ['', '', '', '', '0h2', ''] },
       { x: 540, strings: ['', '', '', '', '', '3b'] },
     ],
-    extraAnnotations: [{ text: '↑ bend to pitch', x: 540, y: 306, small: true }],
+    extraAnnotations: [{ text: '↑ bend to pitch', x: 540, y: 114, small: true }],
   },
   verseAnnotation: 'D – Cadd9 – G  ( × 4 )',
   verseAnnotationX: 92,
@@ -240,20 +247,34 @@ export const App = (): React.JSX.Element => {
           </div>
         ) : (
           <MapleCanvas>
-            <BandHeader song={song} />
-            <BandIntroRiff data={song.introRiff} />
-            <BandVerse
-              annotation={song.verseAnnotation}
-              annotationX={song.verseAnnotationX}
-              rows={song.verseRows}
-            />
-            <BandChorus
-              annotation={song.chorusAnnotation}
-              annotationX={song.chorusAnnotationX}
-              rows={song.chorusRows}
-            />
-            <BandHarmonicMap cols={song.harmonicCols} />
-            <BandNotes title={song.title} artist={song.artist} pageNumber={1} />
+            {(() => {
+              const yHeader   = 0;
+              const yIntro    = yHeader   + BAND_HEADER_HEIGHT;
+              const yVerse    = yIntro    + BAND_INTRO_RIFF_HEIGHT;
+              const yChorus   = yVerse    + BAND_VERSE_HEIGHT;
+              const yHarmonic = yChorus   + BAND_CHORUS_HEIGHT;
+              const yNotes    = yHarmonic + BAND_HARMONIC_MAP_HEIGHT;
+              return (
+                <>
+                  <BandHeader song={song} y={yHeader} />
+                  <BandIntroRiff data={song.introRiff} y={yIntro} />
+                  <BandVerse
+                    annotation={song.verseAnnotation}
+                    annotationX={song.verseAnnotationX}
+                    rows={song.verseRows}
+                    y={yVerse}
+                  />
+                  <BandChorus
+                    annotation={song.chorusAnnotation}
+                    annotationX={song.chorusAnnotationX}
+                    rows={song.chorusRows}
+                    y={yChorus}
+                  />
+                  <BandHarmonicMap cols={song.harmonicCols} y={yHarmonic} />
+                  <BandNotes title={song.title} artist={song.artist} pageNumber={1} y={yNotes} />
+                </>
+              );
+            })()}
           </MapleCanvas>
         )}
       </div>

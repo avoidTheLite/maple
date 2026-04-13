@@ -1,31 +1,33 @@
 import type { LyricRow } from '@maple/types';
 
-const BAND_TOP = 475;
-const LABEL_Y = BAND_TOP + 13;
-const CONTENT_Y = LABEL_Y + 16;
+const LABEL_OFFSET = 13;
+const CONTENT_OFFSET = 29;
 const ROW_HEIGHT = 34;
+const DIVIDER_OFFSET = 139;
 
 interface BandChorusProps {
   annotation: string;
   annotationX: number;
   rows: LyricRow[];
+  y: number;
 }
 
 export const BandChorus = ({
   annotation,
   annotationX,
   rows,
+  y,
 }: BandChorusProps): React.JSX.Element => (
   <>
-    <text x="48" y={LABEL_Y} className="sec">
+    <text x="48" y={y + LABEL_OFFSET} className="sec">
       CHORUS{' '}
     </text>
-    <text x={annotationX} y={LABEL_Y} className="hl">
+    <text x={annotationX} y={y + LABEL_OFFSET} className="hl">
       {annotation}
     </text>
 
     {rows.map((row, ri) => {
-      const chordY = CONTENT_Y + ri * ROW_HEIGHT;
+      const chordY = y + CONTENT_OFFSET + ri * ROW_HEIGHT;
       const lyricY = chordY + 14;
       const sepY = chordY + 18;
       const pivotChords = row.chords.filter((c) => c.pivot);
@@ -63,6 +65,6 @@ export const BandChorus = ({
       );
     })}
 
-    <line x1="48" y1="614" x2="740" y2="614" className="div" />
+    <line x1="48" y1={y + DIVIDER_OFFSET} x2="740" y2={y + DIVIDER_OFFSET} className="div" />
   </>
 );
