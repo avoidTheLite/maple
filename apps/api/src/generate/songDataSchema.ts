@@ -56,6 +56,21 @@ const HarmonicColSchema = z.object({
   pageRef: z.string().optional(),
 });
 
+const LyricSectionSchema = z.object({
+  annotation: z.string(),
+  annotationX: z.number().optional(),
+  rows: z.array(LyricRowSchema),
+});
+
+export const SongSectionSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('introRiff'), data: IntroRiffSchema }),
+  LyricSectionSchema.extend({ type: z.literal('verse') }),
+  LyricSectionSchema.extend({ type: z.literal('chorus') }),
+  LyricSectionSchema.extend({ type: z.literal('bridge') }),
+  z.object({ type: z.literal('harmonicMap'), cols: z.array(HarmonicColSchema) }),
+  z.object({ type: z.literal('notes') }),
+]);
+
 /**
  * Lenient schema for raw LLM output — chord frets are optional because the
  * voicing resolver fills them in from the dictionary after extraction.
@@ -87,6 +102,7 @@ export const LlmSongDataSchema = z
     chorusAnnotationX: z.number(),
     chorusRows: z.array(LyricRowSchema),
     harmonicCols: z.array(HarmonicColSchema),
+    sections: z.array(SongSectionSchema).optional(),
     layoutTemplateId: z.string().optional(),
     songSchemaVersion: z.union([z.string(), z.number()]).optional(),
   })
@@ -115,7 +131,7 @@ export const SongDataSchema = z.object({
   chorusAnnotationX: z.number(),
   chorusRows: z.array(LyricRowSchema),
   harmonicCols: z.array(HarmonicColSchema),
-  /** Forward-compatible optional fields (see AGENTS.md — multi-template). */
+  sections: z.array(SongSectionSchema).optional(),
   layoutTemplateId: z.string().optional(),
   songSchemaVersion: z.union([z.string(), z.number()]).optional(),
 });
