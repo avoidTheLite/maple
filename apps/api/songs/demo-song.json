@@ -1,0 +1,47 @@
+{
+  "title": "Demo",
+  "artist": "Fixture",
+  "album": "Tests",
+  "year": "2024",
+  "key": "Am",
+  "tempo": "♩=120",
+  "timeSig": "4/4",
+  "tuning": "Standard",
+  "capo": "No capo",
+  "mode": "A minor",
+  "chords": [{ "name": "Am", "frets": [-1, 0, 2, 2, 1, 0] }],
+  "structureLines": ["Intro", "Verse", "Chorus"],
+  "introRiff": {
+    "annotation": "× 1",
+    "chordLabels": [{ "text": "Am", "x": 52 }],
+    "barLines": [44, 738],
+    "doubleBarX": 740,
+    "cols": [{ "x": 52, "strings": ["", "", "", "", "", ""] }]
+  },
+  "verseAnnotation": "VERSE",
+  "verseAnnotationX": 92,
+  "verseRows": [
+    {
+      "chords": [{ "name": "Am", "x": 52 }],
+      "lyrics": [{ "text": "Line", "x": 52 }]
+    }
+  ],
+  "chorusAnnotation": "CHORUS",
+  "chorusAnnotationX": 100,
+  "chorusRows": [
+    {
+      "chords": [{ "name": "Am", "x": 52 }],
+      "lyrics": [{ "text": "Hey", "x": 52 }]
+    }
+  ],
+  "harmonicCols": [
+    {
+      "title": "i",
+      "chords": "Am",
+      "mode": "Minor",
+      "modeDetail": "",
+      "row5": "",
+      "row6": ""
+    }
+  ]
+}

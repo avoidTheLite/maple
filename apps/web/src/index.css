@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+@layer base {
+  :root {
+    --background: 45 40% 96%;
+    --foreground: 30 60% 10%;
+    --primary: 34 70% 35%;
+    --primary-foreground: 45 60% 95%;
+    --muted: 40 20% 88%;
+    --muted-foreground: 30 20% 45%;
+    --border: 35 30% 75%;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}

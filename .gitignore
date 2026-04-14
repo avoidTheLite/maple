@@ -1,3 +1,50 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Turbo
+.turbo/
+
+# TypeScript
+*.tsbuildinfo
+
+# Test / coverage
+coverage/
+*.lcov
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Caches
+.cache/
+.eslintcache
+
+# Local LLM response cache (dev)
+apps/api/.llm-cache/
+
+# Vite
+vite.config.ts.timestamp-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local secrets (certs / keys near repo)
+*.pem
+*.key
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

@@ -1,0 +1,337 @@
+<svg width="794" viewBox="0 0 794 1122" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>
+  .bg{fill:#FDF6E8;}
+  .tline{stroke:#7A5C10;stroke-width:0.65;opacity:0.45;}
+  .bar{stroke:#8B6914;stroke-width:0.9;opacity:0.45;}
+  .bar2{stroke:#8B6914;stroke-width:2;opacity:0.55;}
+  .div{stroke:#A07828;stroke-width:0.4;opacity:0.35;stroke-dasharray:3,4;}
+  .sec{font-family:Georgia,serif;font-size:10px;fill:#6B4C0A;opacity:0.75;letter-spacing:1.8px;}
+  .hl{font-family:Georgia,serif;font-size:8.5px;fill:#5A3C0A;font-style:italic;}
+  .ttl{font-family:Georgia,serif;font-size:15px;fill:#4A3008;font-weight:bold;}
+  .sub{font-family:Georgia,serif;font-size:10px;fill:#7A5C10;letter-spacing:1px;}
+  .met{font-family:Georgia,serif;font-size:9px;fill:#2A1A00;}
+  .chn{font-family:Georgia,serif;font-size:10px;fill:#4A2800;font-weight:bold;}
+  .lyr{font-family:Georgia,serif;font-size:10px;fill:#2A1A00;}
+  .tn{font-family:Georgia,serif;font-size:9px;fill:#2A1A00;}
+  .sl{font-family:Georgia,serif;font-size:8px;fill:#8B6914;opacity:0.65;}
+  .cbox{fill:#FFF8EE;stroke:#B08030;stroke-width:0.8;}
+  .cdot{fill:#4A2800;}
+  .csub{font-family:Georgia,serif;font-size:8px;fill:#5A3C0A;}
+  .fl{stroke:#8B6914;stroke-width:0.5;opacity:0.5;}
+  .nut{stroke:#4A2800;stroke-width:1.5;opacity:0.7;}
+  .pv{fill:#FFE0A0;stroke:#C09040;stroke-width:0.7;opacity:0.8;}
+  .pf{font-family:Georgia,serif;font-size:8px;fill:#8B6914;opacity:0.45;letter-spacing:3px;}
+  .mpl{fill:#8B3A00;}
+  .mps{fill:#7A2800;}
+  .blk{fill:#E8F0FF;stroke:#A0B0D0;stroke-width:0.5;opacity:0.25;}
+  .blkl{font-family:Georgia,serif;font-size:8px;fill:#6080A0;opacity:0.5;letter-spacing:1px;}
+  .rowsep{stroke:#8B6914;stroke-width:0.3;opacity:0.15;}
+</style>
+</defs>
+
+<!-- ═══════════════════════════════════════════════════════════
+     A4 794×1122px  ·  8 equal bands of 140.25px
+     Band tops: 0, 140, 281, 421, 562, 702, 842, 982, 1122
+
+     LABEL BUDGET RULE (applied every band):
+       band_top + 8  = section label baseline
+       band_top + 22 = content top (first element)
+     Exception: Band 1 has a header block (y=0–52), so:
+       chord label baseline = 62,  chord content top = 78
+═══════════════════════════════════════════════════════════ -->
+
+<rect width="794" height="1122" class="bg"/>
+<rect x="0" y="0" width="5" height="1122" fill="#C17F2A" opacity="0.55"/>
+<rect x="5" y="0" width="2" height="1122" fill="#D4942F" opacity="0.25"/>
+
+<!-- band guide markers -->
+<rect x="748" y="0"   width="40" height="140" class="blk"/><text x="768" y="74"   text-anchor="middle" class="blkl">1/8</text>
+<rect x="748" y="140" width="40" height="141" class="blk"/><text x="768" y="215"  text-anchor="middle" class="blkl">1/8</text>
+<rect x="748" y="281" width="40" height="140" class="blk"/><text x="768" y="351"  text-anchor="middle" class="blkl">1/4</text>
+<rect x="748" y="421" width="40" height="141" class="blk"/><text x="768" y="491"  text-anchor="middle" class="blkl">1/4</text>
+<rect x="748" y="562" width="40" height="140" class="blk"/><text x="768" y="632"  text-anchor="middle" class="blkl">1/8</text>
+<rect x="748" y="702" width="40" height="420" class="blk"/><text x="768" y="912"  text-anchor="middle" class="blkl">3/8</text>
+
+<!-- maple leaves -->
+<path d="M0,-18 C2,-14 8,-12 6,-6 C10,-8 14,-6 12,0 C16,-2 18,2 14,4 C18,6 16,12 10,10 C12,14 8,16 4,12 C4,16 0,18 0,14 C0,18 -4,16 -4,12 C-8,16 -12,14 -10,10 C-16,12 -18,6 -14,4 C-18,2 -16,-2 -12,0 C-14,-6 -10,-8 -6,-6 C-8,-12 -2,-14 0,-18 Z M0,-18 L0,20" class="mpl" opacity="0.09" transform="translate(380,130) scale(3.8) rotate(12)"/>
+<path d="M0,-14 C1,-10 6,-9 4,-4 C8,-6 11,-4 9,0 C12,-1 14,2 11,3 C14,5 12,9 8,8 C9,11 6,13 3,10 C3,13 0,14 0,11 C0,14 -3,13 -3,10 C-6,13 -9,11 -8,8 C-12,9 -14,5 -11,3 C-14,2 -12,-1 -9,0 C-11,-4 -8,-6 -4,-4 C-6,-9 -1,-10 0,-14 Z M0,-14 L0,16" class="mpl" opacity="0.09" transform="translate(680,820) scale(3.2) rotate(-8)"/>
+<path d="M0,-10 C1,-7 4,-6 3,-3 C5,-4 8,-3 6,0 C9,-1 10,1 8,2 C10,4 9,7 6,6 C7,8 4,9 2,7 C2,9 0,10 0,8 C0,10 -2,9 -2,7 C-4,9 -7,8 -6,6 C-9,7 -10,4 -8,2 C-10,1 -9,-1 -6,0 C-8,-3 -5,-4 -3,-3 C-4,-6 -1,-7 0,-10 Z M0,-10 L0,11" class="mps" opacity="0.14" transform="translate(55,530) scale(2.4) rotate(20)"/>
+<path d="M0,-14 C1,-10 6,-9 4,-4 C8,-6 11,-4 9,0 C12,-1 14,2 11,3 C14,5 12,9 8,8 C9,11 6,13 3,10 C3,13 0,14 0,11 C0,14 -3,13 -3,10 C-6,13 -9,11 -8,8 C-12,9 -14,5 -11,3 C-14,2 -12,-1 -9,0 C-11,-4 -8,-6 -4,-4 C-6,-9 -1,-10 0,-14 Z M0,-14 L0,16" class="mps" opacity="0.14" transform="translate(720,380) scale(2) rotate(-25)"/>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BAND 1  y=0–140                                 -->
+<!-- Header:   y=0–52  (title + meta + rule)         -->
+<!-- Gap:      52–60                                 -->
+<!-- Label:    baseline=62  ("CHORDS USED")          -->
+<!-- Gap:      62–78  (16px clear below label)       -->
+<!-- Diagrams: y=78–124  (h=46)                      -->
+<!-- Divider:  y=138                                 -->
+<!-- ═══════════════════════════════════════════════ -->
+
+<!-- header block -->
+<text x="48" y="20" class="ttl">Blue on Black</text>
+<text x="48" y="33" class="sub">Kenny Wayne Shepherd  ·  Trouble Is...  (1997)</text>
+<text x="490" y="20" class="met">Key: D  ·  Tempo: ♩=78  ·  4/4</text>
+<text x="490" y="32" class="met">Tuning: Standard  ·  No capo</text>
+<text x="490" y="44" class="met">Mode: D pent. minor / D mixolydian</text>
+<line x1="48" y1="38" x2="475" y2="38" stroke="#A07828" stroke-width="0.5" opacity="0.4"/>
+<line x1="48" y1="50" x2="740" y2="50" stroke="#A07828" stroke-width="0.5" opacity="0.4"/>
+
+<!-- chord label — baseline 62, clear of header rule at y=50 -->
+<text x="48"  y="62" class="sec">CHORDS USED</text>
+<text x="260" y="62" class="sec">STRUCTURE</text>
+
+<!-- diagrams — top at y=78, 16px below label baseline -->
+<g transform="translate(52,78)">
+  <rect x="0" y="0" width="38" height="46" class="cbox" rx="2"/>
+  <text x="19" y="-3" text-anchor="middle" class="chn" style="font-size:10px">D</text>
+  <line x1="4" y1="7" x2="34" y2="7" class="nut"/>
+  <line x1="4" y1="15" x2="34" y2="15" class="fl"/><line x1="4" y1="23" x2="34" y2="23" class="fl"/><line x1="4" y1="31" x2="34" y2="31" class="fl"/><line x1="4" y1="39" x2="34" y2="39" class="fl"/>
+  <line x1="4" y1="7" x2="4" y2="43" class="fl"/><line x1="10" y1="7" x2="10" y2="43" class="fl"/><line x1="16" y1="7" x2="16" y2="43" class="fl"/><line x1="22" y1="7" x2="22" y2="43" class="fl"/><line x1="28" y1="7" x2="28" y2="43" class="fl"/><line x1="34" y1="7" x2="34" y2="43" class="fl"/>
+  <text x="4" y="5" text-anchor="middle" class="csub">x</text><text x="10" y="5" text-anchor="middle" class="csub">x</text>
+  <circle cx="16" cy="11" r="3" class="cdot"/><circle cx="22" cy="19" r="3" class="cdot"/><circle cx="28" cy="19" r="3" class="cdot"/>
+  <text x="34" y="5" text-anchor="middle" class="csub">o</text>
+</g>
+<g transform="translate(100,78)">
+  <rect x="0" y="0" width="38" height="46" class="cbox" rx="2"/>
+  <text x="19" y="-3" text-anchor="middle" class="chn" style="font-size:8.5px">Cadd9</text>
+  <line x1="4" y1="7" x2="34" y2="7" class="nut"/>
+  <line x1="4" y1="15" x2="34" y2="15" class="fl"/><line x1="4" y1="23" x2="34" y2="23" class="fl"/><line x1="4" y1="31" x2="34" y2="31" class="fl"/><line x1="4" y1="39" x2="34" y2="39" class="fl"/>
+  <line x1="4" y1="7" x2="4" y2="43" class="fl"/><line x1="10" y1="7" x2="10" y2="43" class="fl"/><line x1="16" y1="7" x2="16" y2="43" class="fl"/><line x1="22" y1="7" x2="22" y2="43" class="fl"/><line x1="28" y1="7" x2="28" y2="43" class="fl"/><line x1="34" y1="7" x2="34" y2="43" class="fl"/>
+  <text x="4" y="5" text-anchor="middle" class="csub">x</text>
+  <circle cx="10" cy="11" r="3" class="cdot"/>
+  <text x="16" y="5" text-anchor="middle" class="csub">o</text><text x="22" y="5" text-anchor="middle" class="csub">o</text>
+  <circle cx="28" cy="11" r="3" class="cdot"/><circle cx="34" cy="11" r="3" class="cdot"/>
+</g>
+<g transform="translate(148,78)">
+  <rect x="0" y="0" width="38" height="46" class="cbox" rx="2"/>
+  <text x="19" y="-3" text-anchor="middle" class="chn" style="font-size:10px">G</text>
+  <line x1="4" y1="7" x2="34" y2="7" class="nut"/>
+  <line x1="4" y1="15" x2="34" y2="15" class="fl"/><line x1="4" y1="23" x2="34" y2="23" class="fl"/><line x1="4" y1="31" x2="34" y2="31" class="fl"/><line x1="4" y1="39" x2="34" y2="39" class="fl"/>
+  <line x1="4" y1="7" x2="4" y2="43" class="fl"/><line x1="10" y1="7" x2="10" y2="43" class="fl"/><line x1="16" y1="7" x2="16" y2="43" class="fl"/><line x1="22" y1="7" x2="22" y2="43" class="fl"/><line x1="28" y1="7" x2="28" y2="43" class="fl"/><line x1="34" y1="7" x2="34" y2="43" class="fl"/>
+  <circle cx="4" cy="27" r="3" class="cdot"/>
+  <text x="10" y="5" text-anchor="middle" class="csub">o</text><text x="16" y="5" text-anchor="middle" class="csub">o</text><text x="22" y="5" text-anchor="middle" class="csub">o</text>
+  <circle cx="28" cy="11" r="3" class="cdot"/><circle cx="34" cy="27" r="3" class="cdot"/>
+</g>
+<g transform="translate(196,78)">
+  <rect x="0" y="0" width="38" height="46" class="cbox" rx="2"/>
+  <text x="19" y="-3" text-anchor="middle" class="chn" style="font-size:10px">A</text>
+  <line x1="4" y1="7" x2="34" y2="7" class="nut"/>
+  <line x1="4" y1="15" x2="34" y2="15" class="fl"/><line x1="4" y1="23" x2="34" y2="23" class="fl"/><line x1="4" y1="31" x2="34" y2="31" class="fl"/><line x1="4" y1="39" x2="34" y2="39" class="fl"/>
+  <line x1="4" y1="7" x2="4" y2="43" class="fl"/><line x1="10" y1="7" x2="10" y2="43" class="fl"/><line x1="16" y1="7" x2="16" y2="43" class="fl"/><line x1="22" y1="7" x2="22" y2="43" class="fl"/><line x1="28" y1="7" x2="28" y2="43" class="fl"/><line x1="34" y1="7" x2="34" y2="43" class="fl"/>
+  <text x="4" y="5" text-anchor="middle" class="csub">x</text><text x="10" y="5" text-anchor="middle" class="csub">o</text>
+  <circle cx="16" cy="11" r="3" class="cdot"/><circle cx="22" cy="11" r="3" class="cdot"/><circle cx="28" cy="11" r="3" class="cdot"/>
+  <text x="34" y="5" text-anchor="middle" class="csub">o</text>
+</g>
+
+<!-- structure box — top aligned with diagrams at y=78, same label baseline -->
+<rect x="258" y="78" width="476" height="46" class="cbox" rx="3"/>
+<text x="268" y="91"  class="met">Intro  →  Verse 1  →  Chorus  →  Verse 2  →  Chorus  →  Solo  →  Outro</text>
+<text x="268" y="104" class="met">Main riff:  D – Cadd9 – G  ( × 4 per verse )</text>
+<text x="268" y="117" class="met">Chorus:  D – C – G  then  A – G  ( V pivot ) → D</text>
+
+<line x1="48" y1="138" x2="740" y2="138" class="div"/>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BAND 2  y=140–281  intro riff tab               -->
+<!-- Label:    baseline=153  (140+13)                -->
+<!-- Chord names: y=165  (153+12)                    -->
+<!-- Tab top:  y=168  (6px below chord names)        -->
+<!-- Tab btm:  y=228  (6 lines × 12px)               -->
+<!-- Annotation: y=238–258                           -->
+<!-- Divider:  y=279                                 -->
+<!-- ═══════════════════════════════════════════════ -->
+
+<text x="48" y="153" class="sec">INTRO RIFF  </text><text x="118" y="153" class="hl">× 2  — same pattern as verse backbone</text>
+
+<!-- chord names above tab, 12px clear of label baseline -->
+<text x="72"  y="165" class="chn">D</text>
+<text x="245" y="165" class="chn">Cadd9</text>
+<text x="435" y="165" class="chn">G</text>
+
+<!-- string labels aligned to tab line centres -->
+<text x="42" y="179" text-anchor="end" class="sl">e</text>
+<text x="42" y="191" text-anchor="end" class="sl">B</text>
+<text x="42" y="203" text-anchor="end" class="sl">G</text>
+<text x="42" y="215" text-anchor="end" class="sl">D</text>
+<text x="42" y="227" text-anchor="end" class="sl">A</text>
+<text x="42" y="239" text-anchor="end" class="sl">E</text>
+
+<!-- 6 tab lines starting y=176, spaced 12px -->
+<line x1="44" y1="176" x2="740" y2="176" class="tline"/>
+<line x1="44" y1="188" x2="740" y2="188" class="tline"/>
+<line x1="44" y1="200" x2="740" y2="200" class="tline"/>
+<line x1="44" y1="212" x2="740" y2="212" class="tline"/>
+<line x1="44" y1="224" x2="740" y2="224" class="tline"/>
+<line x1="44" y1="236" x2="740" y2="236" class="tline"/>
+
+<!-- bar lines -->
+<line x1="44"  y1="176" x2="44"  y2="236" class="bar"/>
+<line x1="233" y1="176" x2="233" y2="236" class="bar"/>
+<line x1="423" y1="176" x2="423" y2="236" class="bar"/>
+<line x1="738" y1="176" x2="738" y2="236" class="bar"/>
+<line x1="740" y1="176" x2="740" y2="236" class="bar2"/>
+
+<!-- D frets -->
+<text x="58"  y="179" class="tn">2</text><text x="58"  y="191" class="tn">3</text><text x="58"  y="203" class="tn">2</text><text x="58"  y="215" class="tn">0</text><text x="58"  y="227" class="tn">0</text><text x="58"  y="239" class="tn">–</text>
+<text x="88"  y="179" class="tn">2</text><text x="88"  y="191" class="tn">3</text><text x="88"  y="203" class="tn">0</text><text x="88"  y="215" class="tn">0</text><text x="88"  y="227" class="tn">0</text><text x="88"  y="239" class="tn">–</text>
+<!-- Cadd9 frets -->
+<text x="247" y="179" class="tn">3</text><text x="247" y="191" class="tn">3</text><text x="247" y="203" class="tn">0</text><text x="247" y="215" class="tn">2</text><text x="247" y="227" class="tn">3</text><text x="247" y="239" class="tn">–</text>
+<!-- G frets + techniques -->
+<text x="437" y="179" class="tn">3</text><text x="437" y="191" class="tn">3</text><text x="437" y="203" class="tn">0</text><text x="437" y="215" class="tn">0</text><text x="437" y="227" class="tn">2</text><text x="437" y="239" class="tn">3</text>
+<text x="485" y="227" class="tn">0h2</text>
+<text x="540" y="239" class="tn">3b</text>
+<text x="540" y="252" class="hl" style="font-size:7px">↑ bend to pitch</text>
+
+<line x1="48" y1="279" x2="740" y2="279" class="div"/>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BAND 3  y=281–421  verse (1/4 = 140px)          -->
+<!-- Label:    baseline=294  (281+13)                -->
+<!-- Row 1:    chord y=310  lyric y=324  (294+16 content clear) -->
+<!-- Row 2:    chord y=344  lyric y=358              -->
+<!-- Row 3:    chord y=378  lyric y=392              -->
+<!-- Row 4:    chord y=408  lyric y=422 (clips to 421+1 — fine) -->
+<!-- Row height = 34px  (12 chord + 6 gap + 14 lyric + 2 sep)  -->
+<!-- ═══════════════════════════════════════════════ -->
+
+<text x="48" y="294" class="sec">VERSE  </text><text x="92" y="294" class="hl">D – Cadd9 – G  ( × 4 )</text>
+
+<!-- row 1  chord baseline=310, lyric baseline=324 -->
+<text x="52"  y="310" class="chn">D</text><text x="192" y="310" class="chn">Cadd9</text><text x="316" y="310" class="chn">G</text>
+<text x="374" y="310" class="chn">D</text><text x="514" y="310" class="chn">Cadd9</text><text x="638" y="310" class="chn">G</text>
+<text x="52"  y="324" class="lyr">Night falls,</text><text x="198" y="324" class="lyr">and I'm</text><text x="320" y="324" class="lyr">a-</text><text x="378" y="324" class="lyr">lone</text>
+<line x1="48" y1="328" x2="740" y2="328" class="rowsep"/>
+
+<!-- row 2  chord baseline=344, lyric baseline=358 -->
+<text x="52"  y="344" class="chn">D</text><text x="192" y="344" class="chn">Cadd9</text><text x="316" y="344" class="chn">G</text>
+<text x="374" y="344" class="chn">D</text><text x="514" y="344" class="chn">Cadd9</text><text x="638" y="344" class="chn">G</text>
+<text x="52"  y="358" class="lyr">Skin, yeah,</text><text x="198" y="358" class="lyr">chilled me</text><text x="320" y="358" class="lyr">to the</text><text x="378" y="358" class="lyr">bone</text>
+<line x1="48" y1="362" x2="740" y2="362" class="rowsep"/>
+
+<!-- row 3  chord baseline=378, lyric baseline=392 -->
+<text x="52"  y="378" class="chn">D</text><text x="192" y="378" class="chn">Cadd9</text><text x="316" y="378" class="chn">G</text>
+<text x="374" y="378" class="chn">D</text><text x="514" y="378" class="chn">Cadd9</text><text x="638" y="378" class="chn">G</text>
+<text x="52"  y="392" class="lyr">You turned</text><text x="198" y="392" class="lyr">and you ran,</text><text x="378" y="392" class="lyr">oh yeah</text>
+<line x1="48" y1="396" x2="740" y2="396" class="rowsep"/>
+
+<!-- row 4  chord baseline=410, lyric baseline=420 (snug to band edge — intentional) -->
+<text x="52"  y="410" class="chn">D</text><text x="192" y="410" class="chn">Cadd9</text><text x="316" y="410" class="chn">G</text>
+<text x="374" y="410" class="chn">D</text><text x="514" y="410" class="chn">Cadd9</text><text x="638" y="410" class="chn">G</text>
+<text x="52"  y="420" class="lyr">Oh, slipped right from my hand</text>
+
+<line x1="48" y1="419" x2="740" y2="419" class="div"/>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BAND 4  y=421–562  chorus (1/4 = 141px)         -->
+<!-- Label:    baseline=434  (421+13)                -->
+<!-- Row 1:    chord y=450  lyric y=464  (434+16 clear) -->
+<!-- Rows spaced 34px apart                          -->
+<!-- ═══════════════════════════════════════════════ -->
+
+<text x="48" y="434" class="sec">CHORUS  </text><text x="100" y="434" class="hl">A pivot on "won't bring you back"</text>
+
+<!-- row 1  chord=450, lyric=464 -->
+<text x="52"  y="450" class="chn">D</text><text x="270" y="450" class="chn">C</text><text x="446" y="450" class="chn">G</text>
+<text x="52"  y="464" class="lyr">Blue on black,  tears on a river,</text><text x="276" y="464" class="lyr">push on a shove,</text><text x="452" y="464" class="lyr">don't mean much</text>
+<line x1="48" y1="468" x2="740" y2="468" class="rowsep"/>
+
+<!-- row 2  chord=484, lyric=498 -->
+<text x="52"  y="484" class="chn">D</text><text x="270" y="484" class="chn">C</text><text x="446" y="484" class="chn">G</text>
+<text x="52"  y="498" class="lyr">Joker on jack,  match on a fire,</text><text x="276" y="498" class="lyr">cold on ice,</text><text x="452" y="498" class="lyr">a dead man's touch</text>
+<line x1="48" y1="502" x2="740" y2="502" class="rowsep"/>
+
+<!-- row 3  chord=518, lyric=532 -->
+<text x="52"  y="518" class="chn">D</text><text x="270" y="518" class="chn">C</text><text x="446" y="518" class="chn">G</text>
+<text x="52"  y="532" class="lyr">Whisper on a scream,</text><text x="276" y="532" class="lyr">doesn't change a thing.</text>
+<line x1="48" y1="536" x2="740" y2="536" class="rowsep"/>
+
+<!-- row 4 pivot  chord=550, lyric=560 -->
+<text x="52"  y="550" class="chn">D</text><text x="270" y="550" class="chn">C</text><text x="446" y="550" class="chn">G</text>
+<rect x="583" y="541" width="24" height="13" class="pv" rx="2"/>
+<text x="586" y="550" class="chn">A</text><text x="630" y="550" class="chn">G</text>
+<text x="52"  y="560" class="lyr">Won't bring you back —  Blue on black</text>
+<text x="589" y="549" class="hl">← V pivot</text>
+
+<line x1="48" y1="560" x2="740" y2="560" class="div"/>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BAND 5  y=562–702  harmonic map (1/8 = 140px)   -->
+<!-- Label:    baseline=575  (562+13)                -->
+<!-- Box top:  y=582  (575+7)                        -->
+<!-- Box h:    108px  (582+108=690, leaving 12px pad to divider) -->
+<!-- ═══════════════════════════════════════════════ -->
+
+<text x="48" y="575" class="sec">HARMONIC MAP</text>
+<rect x="48" y="582" width="692" height="108" class="cbox" rx="3"/>
+
+<line x1="221" y1="586" x2="221" y2="686" stroke="#C09040" stroke-width="0.5" opacity="0.4"/>
+<line x1="394" y1="586" x2="394" y2="686" stroke="#C09040" stroke-width="0.5" opacity="0.4"/>
+<line x1="567" y1="586" x2="567" y2="686" stroke="#C09040" stroke-width="0.5" opacity="0.4"/>
+
+<text x="60"  y="600" class="met" style="font-weight:bold">Verse / Intro</text>
+<text x="60"  y="614" class="met">D – Cadd9 – G</text>
+<text x="60"  y="628" class="hl">D mixolydian</text>
+<text x="60"  y="640" class="hl">D pent. minor</text>
+<text x="60"  y="654" class="met" style="font-size:8px">Safe: D E F# G A C</text>
+<text x="60"  y="666" class="met" style="font-size:8px">Avoid: C# (diatonic major)</text>
+<text x="60"  y="680" class="hl">→ p.2 for fretboard map</text>
+
+<text x="232" y="600" class="met" style="font-weight:bold">Chorus</text>
+<text x="232" y="614" class="met">D – C – G</text>
+<text x="232" y="628" class="hl">Same palette</text>
+<text x="232" y="640" class="hl">denser rhythm feel</text>
+<text x="232" y="654" class="met" style="font-size:8px">C natural = ♭7</text>
+<text x="232" y="666" class="met" style="font-size:8px">Strong mixolydian colour</text>
+
+<text x="406" y="600" class="met" style="font-weight:bold">Chorus pivot</text>
+<text x="406" y="614" class="met">A – G  (bar 3)</text>
+<text x="406" y="628" class="hl">V chord tension</text>
+<text x="406" y="640" class="hl">resolves back to D</text>
+<text x="406" y="654" class="met" style="font-size:8px">A = V of D (dominant)</text>
+<text x="406" y="666" class="met" style="font-size:8px">Creates lift before resolve</text>
+
+<text x="578" y="600" class="met" style="font-weight:bold">Solo</text>
+<text x="578" y="614" class="met">D pent. minor</text>
+<text x="578" y="628" class="hl">D F G A C</text>
+<text x="578" y="640" class="hl">no E, no B</text>
+<text x="578" y="654" class="met" style="font-size:8px;fill:#8B2000">⚠ not diatonic minor</text>
+<text x="578" y="666" class="met" style="font-size:8px">F# clashes here</text>
+<text x="578" y="680" class="hl">→ solo tab on p.2</text>
+
+<line x1="48" y1="700" x2="740" y2="700" class="div"/>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BANDS 6+7+8  y=702–1122  notes (3/8 = 420px)   -->
+<!-- Label:    baseline=715  (702+13)                -->
+<!-- First line: y=728  (715+13)                     -->
+<!-- 16 lines × 24px spacing = 384px  ends at y=1112 -->
+<!-- Footer: y=1103–1122                             -->
+<!-- ═══════════════════════════════════════════════ -->
+
+<text x="48" y="715" class="sec">NOTES</text>
+
+<line x1="48" y1="728"  x2="740" y2="728"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="752"  x2="740" y2="752"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="776"  x2="740" y2="776"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="800"  x2="740" y2="800"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="824"  x2="740" y2="824"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="848"  x2="740" y2="848"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="872"  x2="740" y2="872"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="896"  x2="740" y2="896"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="920"  x2="740" y2="920"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="944"  x2="740" y2="944"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="968"  x2="740" y2="968"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="992"  x2="740" y2="992"  stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="1016" x2="740" y2="1016" stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="1040" x2="740" y2="1040" stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="1064" x2="740" y2="1064" stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+<line x1="48" y1="1088" x2="740" y2="1088" stroke="#8B6914" stroke-width="0.4" opacity="0.22"/>
+
+<line x1="48" y1="1103" x2="740" y2="1103" stroke="#A07828" stroke-width="0.4" opacity="0.35"/>
+<text x="48"  y="1115" class="pf">maple</text>
+<text x="394" y="1115" text-anchor="middle" class="pf">blue on black  ·  kenny wayne shepherd</text>
+<text x="740" y="1115" text-anchor="end" class="pf">1</text>
+
+</svg>

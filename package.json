@@ -1,0 +1,21 @@
+{
+  "name": "maple",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "packageManager": "pnpm@10.32.1",
+  "devDependencies": {
+    "@maple/eslint-config": "workspace:*",
+    "eslint": "^9.0.0",
+    "turbo": "^2.5.4"
+  }
+}
