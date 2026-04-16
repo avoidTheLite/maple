@@ -5,6 +5,7 @@ import { mapleGenerateDeps } from './generate/createGenerateDeps.ts';
 import type { GenerateDeps } from './generate/generateService.ts';
 import { createGenerateRouter } from './generate/generateRouter.ts';
 import { createSheetsRouter } from './generate/sheetsRouter.ts';
+import { createLayoutsRouter } from './layouts/layoutsRouter.ts';
 
 const defaultGetDeps = (): GenerateDeps => mapleGenerateDeps;
 
@@ -15,6 +16,7 @@ export function createApp(getDeps: () => GenerateDeps = defaultGetDeps): express
 
   app.use('/api/generate', createGenerateRouter(getDeps));
   app.use('/api/sheets', createSheetsRouter(getDeps));
+  app.use('/api/layouts', createLayoutsRouter(getDeps));
 
   app.use(errorHandler);
 

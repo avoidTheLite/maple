@@ -27,10 +27,26 @@ const CSS = `
 
 interface MapleCanvasProps {
   children: React.ReactNode;
+  svgRef?: React.Ref<SVGSVGElement>;
+  onPointerMove?: React.PointerEventHandler<SVGSVGElement>;
+  onPointerUp?: React.PointerEventHandler<SVGSVGElement>;
 }
 
-export const MapleCanvas = ({ children }: MapleCanvasProps): React.JSX.Element => (
-  <svg width={794} height={1122} viewBox="0 0 794 1122" xmlns="http://www.w3.org/2000/svg">
+export const MapleCanvas = ({
+  children,
+  svgRef,
+  onPointerMove,
+  onPointerUp,
+}: MapleCanvasProps): React.JSX.Element => (
+  <svg
+    ref={svgRef}
+    width={794}
+    height={1122}
+    viewBox="0 0 794 1122"
+    xmlns="http://www.w3.org/2000/svg"
+    onPointerMove={onPointerMove}
+    onPointerUp={onPointerUp}
+  >
     <defs>
       <style>{CSS}</style>
     </defs>

@@ -12,10 +12,19 @@ const STRING_LABELS = ['e', 'B', 'G', 'D', 'A', 'E'] as const;
 interface BandIntroRiffProps {
   data: IntroRiffData;
   y: number;
+  barLineOverrides?: number[];
+  colXOverrides?: number[];
 }
 
-export const BandIntroRiff = ({ data, y }: BandIntroRiffProps): React.JSX.Element => {
+export const BandIntroRiff = ({
+  data,
+  y,
+  barLineOverrides,
+  colXOverrides,
+}: BandIntroRiffProps): React.JSX.Element => {
   const { annotation, chordLabels, barLines, doubleBarX, cols, extraAnnotations } = data;
+  const effectiveBarLines = barLineOverrides ?? barLines;
+  const effectiveCols = cols.map((col, i) => ({ ...col, x: colXOverrides?.[i] ?? col.x }));
 
   const tabY = TAB_LINE_OFFSETS.map((o) => y + o);
 
@@ -44,12 +53,12 @@ export const BandIntroRiff = ({ data, y }: BandIntroRiffProps): React.JSX.Elemen
         <line key={ty} x1="44" y1={ty} x2="740" y2={ty} className="tline" />
       ))}
 
-      {barLines.map((x) => (
+      {effectiveBarLines.map((x) => (
         <line key={x} x1={x} y1={tabY[0]} x2={x} y2={tabY[5]} className="bar" />
       ))}
       <line x1={doubleBarX} y1={tabY[0]} x2={doubleBarX} y2={tabY[5]} className="bar2" />
 
-      {cols.map((col, ci) =>
+      {effectiveCols.map((col, ci) =>
         col.strings.map((val, si) =>
           val !== '' ? (
             <text key={`${ci}-${si}`} x={col.x} y={tabY[si] + 3} className="tn">

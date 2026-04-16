@@ -10,6 +10,7 @@ interface BandChorusProps {
   annotationX: number;
   rows: LyricRow[];
   y: number;
+  rowYOffsets?: number[];
 }
 
 export const BandChorus = ({
@@ -17,6 +18,7 @@ export const BandChorus = ({
   annotationX,
   rows,
   y,
+  rowYOffsets,
 }: BandChorusProps): React.JSX.Element => (
   <>
     <text x="48" y={y + LABEL_OFFSET} className="sec">
@@ -27,7 +29,8 @@ export const BandChorus = ({
     </text>
 
     {rows.map((row, ri) => {
-      const chordY = y + CONTENT_OFFSET + ri * ROW_HEIGHT;
+      const rowYOffset = rowYOffsets?.[ri] ?? 0;
+      const chordY = y + CONTENT_OFFSET + ri * ROW_HEIGHT + rowYOffset;
       const lyricY = chordY + 14;
       const sepY = chordY + 18;
       const pivotChords = row.chords.filter((c) => c.pivot);
