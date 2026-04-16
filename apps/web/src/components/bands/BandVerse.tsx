@@ -10,9 +10,16 @@ interface BandVerseProps {
   annotationX: number;
   rows: LyricRow[];
   y: number;
+  rowYOffsets?: number[];
 }
 
-export const BandVerse = ({ annotation, annotationX, rows, y }: BandVerseProps): React.JSX.Element => (
+export const BandVerse = ({
+  annotation,
+  annotationX,
+  rows,
+  y,
+  rowYOffsets,
+}: BandVerseProps): React.JSX.Element => (
   <>
     <text x="48" y={y + LABEL_OFFSET} className="sec">
       VERSE{' '}
@@ -22,7 +29,8 @@ export const BandVerse = ({ annotation, annotationX, rows, y }: BandVerseProps):
     </text>
 
     {rows.map((row, ri) => {
-      const chordY = y + CONTENT_OFFSET + ri * ROW_HEIGHT;
+      const rowYOffset = rowYOffsets?.[ri] ?? 0;
+      const chordY = y + CONTENT_OFFSET + ri * ROW_HEIGHT + rowYOffset;
       const lyricY = chordY + 14;
       const sepY = chordY + 18;
 

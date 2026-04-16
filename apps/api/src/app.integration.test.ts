@@ -63,12 +63,14 @@ function integrationLlmMessage(): LlmMessage {
 
 describe('HTTP integration (supertest)', () => {
   let cacheDir: string;
+  let layoutsDir: string;
   let llmCalls: number;
   let mockLlm: GenerateDeps['llm'];
   let getDeps: () => GenerateDeps;
 
   beforeEach(async () => {
     cacheDir = await mkdtemp(join(tmpdir(), 'maple-http-'));
+    layoutsDir = await mkdtemp(join(tmpdir(), 'maple-layouts-'));
     llmCalls = 0;
     mockLlm = {
       createMessage: async () => {
@@ -83,12 +85,14 @@ describe('HTTP integration (supertest)', () => {
       maxTokens: 8096,
       cacheMode: 'readwrite',
       cacheDir,
+      layoutsDir,
       llm: mockLlm,
     });
   });
 
   afterEach(async () => {
     await rm(cacheDir, { recursive: true, force: true });
+    await rm(layoutsDir, { recursive: true, force: true });
   });
 
   it('POST /api/generate returns 200 and calls LLM once on cache miss', async () => {
@@ -128,5 +132,43 @@ describe('HTTP integration (supertest)', () => {
     expect(res.status).toBe(200);
     expect(res.body.title).toBe('Demo');
     expect(res.body.artist).toBe('Fixture');
+  });
+
+  it('PUT then GET /api/layouts/:slug stores layout configs separately', async () => {
+    const app = createApp(getDeps);
+    const layout = {
+      schemaVersion: '1',
+      templateId: 'standard',
+      songSlug: 'integration-http-test',
+      sections: [
+        {
+          id: 'header',
+          type: 'header',
+          label: 'Header',
+          order: 0,
+          x: 48,
+          y: 0,
+          width: 692,
+          height: 192,
+          autoFill: true,
+          parked: false,
+        },
+      ],
+      items: [],
+      mergeGroups: [],
+      parkingLot: { itemIds: [], sectionIds: [] },
+    };
+
+    const put = await request(app)
+      .put('/api/layouts/integration-http-test?template=standard')
+      .send(layout)
+      .set('Content-Type', 'application/json');
+    expect(put.status).toBe(200);
+    expect(put.body.songSlug).toBe('integration-http-test');
+
+    const get = await request(app).get('/api/layouts/integration-http-test?template=standard');
+    expect(get.status).toBe(200);
+    expect(get.body.sections).toHaveLength(1);
+    expect(get.body.sections[0].id).toBe('header');
   });
 });
