@@ -28,6 +28,11 @@ describe('ValidationError', () => {
     expect(err.statusCode).toBe(400);
     expect(err.message).toBe('Invalid request');
   });
+
+  it('stores details payload when provided', () => {
+    const err = new ValidationError('Invalid body', { fields: { title: ['Required'] } });
+    expect(err.details).toEqual({ fields: { title: ['Required'] } });
+  });
 });
 
 describe('NotFoundError', () => {
@@ -44,6 +49,13 @@ describe('errorHandler', () => {
     errorHandler(new AppError('oops', 418), mockReq, res, mockNext);
     expect(res.status).toHaveBeenCalledWith(418);
     expect(res.json).toHaveBeenCalledWith({ error: 'oops' });
+  });
+
+  it('includes details for structured AppError responses', () => {
+    const res = mockRes();
+    errorHandler(new ValidationError('bad input', { fields: ['title'] }), mockReq, res, mockNext);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'bad input', details: { fields: ['title'] } });
   });
 
   it('responds 500 for unknown errors', () => {

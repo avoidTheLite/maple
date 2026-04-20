@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import type { SheetLayoutConfig, SheetLayoutItemConfig, SheetLayoutSectionConfig, SongData } from '@maple/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type {
+  SheetLayoutConfig,
+  SheetLayoutItemConfig,
+  SheetLayoutSectionConfig,
+  SongData,
+} from '@maple/types';
 import { MapleCanvas } from './components/MapleCanvas.tsx';
 import { BandHeader } from './components/bands/BandHeader.tsx';
 import { BandIntroRiff } from './components/bands/BandIntroRiff.tsx';
@@ -9,7 +14,15 @@ import { BandChorus } from './components/bands/BandChorus.tsx';
 import { BandHarmonicMap } from './components/bands/BandHarmonicMap.tsx';
 import { BandNotes } from './components/bands/BandNotes.tsx';
 import { SongSearch } from './components/SongSearch.tsx';
-import { PAGE_HEIGHT, PAGE_WIDTH, applyAutoFill, buildDefaultLayoutConfig, mergeWithDefaults, toSongSlug } from './layout/layoutConfig.ts';
+import {
+  PAGE_HEIGHT,
+  PAGE_WIDTH,
+  applyAutoFill,
+  buildDefaultLayoutConfig,
+  mergeWithDefaults,
+  toSongSlug,
+} from './layout/layoutConfig.ts';
+import { ApiError, generateSongData, loadLayoutConfig, saveLayoutConfig } from './api/client.ts';
 
 const BlueOnBlack: SongData = {
   title: 'Blue on Black',
@@ -203,21 +216,7 @@ const BlueOnBlack: SongData = {
   ],
 };
 
-async function generateSongData(title: string, artist: string): Promise<SongData> {
-  const res = await fetch('/api/generate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title, artist }),
-  });
-  if (!res.ok) {
-    const body = (await res.json()) as { error?: string };
-    throw new Error(body.error ?? `Server error ${res.status}`);
-  }
-  return res.json() as Promise<SongData>;
-}
-
 export const App = (): React.JSX.Element => {
-  const INTRO_TAB_TOP_OFFSET = 38;
   const VERSE_ROW_TOP_OFFSET = 23;
   const CHORUS_ROW_TOP_OFFSET = 23;
   const ROW_HEIGHT = 34;
@@ -227,7 +226,9 @@ export const App = (): React.JSX.Element => {
   const [mode, setMode] = useState<'view' | 'edit'>('view');
   const [song, setSong] = useState<SongData>(BlueOnBlack);
   const defaultLayout = useMemo(() => buildDefaultLayoutConfig(song), [song]);
-  const [layoutConfig, setLayoutConfig] = useState<SheetLayoutConfig>(() => buildDefaultLayoutConfig(BlueOnBlack));
+  const [layoutConfig, setLayoutConfig] = useState<SheetLayoutConfig>(() =>
+    buildDefaultLayoutConfig(BlueOnBlack),
+  );
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [dragState, setDragState] = useState<
@@ -252,50 +253,59 @@ export const App = (): React.JSX.Element => {
       }
     | null
   >(null);
-  const [savePending, setSavePending] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
+  const songSlug = toSongSlug(song);
+  const templateId = 'standard';
+  const layoutQueryKey = ['layout', songSlug, templateId] as const;
   const { mutate, isPending, error } = useMutation({
     mutationFn: ({ title, artist }: { title: string; artist: string }) =>
       generateSongData(title, artist),
     onSuccess: (data) => setSong(data),
   });
+  const { data: savedLayout } = useQuery({
+    queryKey: layoutQueryKey,
+    queryFn: () => loadLayoutConfig(songSlug, templateId),
+    retry: false,
+  });
+  const saveLayoutMutation = useMutation({
+    mutationFn: (layout: SheetLayoutConfig) => saveLayoutConfig(songSlug, templateId, layout),
+    onSuccess: (saved) => {
+      setLayoutConfig(saved);
+      setSaveStatus('Saved layout.');
+      queryClient.setQueryData(layoutQueryKey, saved);
+    },
+    onError: (mutationError) => {
+      const message =
+        mutationError instanceof Error ? mutationError.message : 'Failed to save layout.';
+      setSaveStatus(message);
+    },
+  });
 
-  const errorMessage = error instanceof Error ? error.message : null;
-  const songSlug = toSongSlug(song);
+  const errorMessage = error instanceof ApiError || error instanceof Error ? error.message : null;
 
   useEffect(() => {
     setLayoutConfig(defaultLayout);
     setSelectedSectionId(null);
     setSelectedItemId(null);
     setDragState(null);
-
-    let cancelled = false;
-    void (async () => {
-      try {
-        const res = await fetch(`/api/layouts/${songSlug}?template=standard`);
-        if (!res.ok) {
-          return;
-        }
-        const saved = (await res.json()) as SheetLayoutConfig;
-        if (!cancelled) {
-          setLayoutConfig(mergeWithDefaults(defaultLayout, saved));
-        }
-      } catch {
-        // Keep defaults when layout file does not exist yet.
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
   }, [defaultLayout, songSlug]);
+  useEffect(() => {
+    if (!savedLayout) {
+      return;
+    }
+    setLayoutConfig(mergeWithDefaults(defaultLayout, savedLayout));
+  }, [defaultLayout, savedLayout]);
 
   useEffect(() => {
     if (mode !== 'edit') return;
     const onKeyDown = (event: KeyboardEvent): void => {
       const target = event.target as HTMLElement | null;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+      if (
+        target &&
+        (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
+      ) {
         return;
       }
       const step = event.shiftKey ? 10 : 1;
@@ -325,7 +335,9 @@ export const App = (): React.JSX.Element => {
           };
         }
         if (selectedItemId) {
-          const merged = prev.mergeGroups.find((group) => group.merged && group.memberItemIds.includes(selectedItemId));
+          const merged = prev.mergeGroups.find(
+            (group) => group.merged && group.memberItemIds.includes(selectedItemId),
+          );
           const movingIds = merged ? merged.memberItemIds : [selectedItemId];
           return {
             ...prev,
@@ -360,18 +372,12 @@ export const App = (): React.JSX.Element => {
   );
 
   const activeItems = useMemo(
-    () =>
-      [...layoutConfig.items]
-        .filter((item) => !item.parked)
-        .sort((a, b) => a.index - b.index),
+    () => [...layoutConfig.items].filter((item) => !item.parked).sort((a, b) => a.index - b.index),
     [layoutConfig.items],
   );
 
   const parkedItems = useMemo(
-    () =>
-      [...layoutConfig.items]
-        .filter((item) => item.parked)
-        .sort((a, b) => a.index - b.index),
+    () => [...layoutConfig.items].filter((item) => item.parked).sort((a, b) => a.index - b.index),
     [layoutConfig.items],
   );
 
@@ -395,16 +401,19 @@ export const App = (): React.JSX.Element => {
     return counts;
   }, [layoutConfig.mergeGroups]);
 
-  const toSvgPoint = useCallback((clientX: number, clientY: number): { x: number; y: number } | null => {
-    const svg = svgRef.current;
-    if (!svg) return null;
-    const rect = svg.getBoundingClientRect();
-    if (!rect.width || !rect.height) return null;
-    return {
-      x: ((clientX - rect.left) * PAGE_WIDTH) / rect.width,
-      y: ((clientY - rect.top) * PAGE_HEIGHT) / rect.height,
-    };
-  }, []);
+  const toSvgPoint = useCallback(
+    (clientX: number, clientY: number): { x: number; y: number } | null => {
+      const svg = svgRef.current;
+      if (!svg) return null;
+      const rect = svg.getBoundingClientRect();
+      if (!rect.width || !rect.height) return null;
+      return {
+        x: ((clientX - rect.left) * PAGE_WIDTH) / rect.width,
+        y: ((clientY - rect.top) * PAGE_HEIGHT) / rect.height,
+      };
+    },
+    [],
+  );
 
   const getMergedDragIds = useCallback(
     (itemId: string): string[] => {
@@ -416,72 +425,75 @@ export const App = (): React.JSX.Element => {
     [layoutConfig.mergeGroups],
   );
 
-  const handlePointerMove = useCallback((event: React.PointerEvent<SVGSVGElement>) => {
-    if (!dragState) return;
-    const point = toSvgPoint(event.clientX, event.clientY);
-    if (!point) return;
+  const handlePointerMove = useCallback(
+    (event: React.PointerEvent<SVGSVGElement>) => {
+      if (!dragState) return;
+      const point = toSvgPoint(event.clientX, event.clientY);
+      if (!point) return;
 
-    const dx = point.x - dragState.startX;
-    const dy = point.y - dragState.startY;
-    setLayoutConfig((prev) => {
-      if (dragState.kind === 'section') {
-        let sectionDx = 0;
-        let sectionDy = 0;
-        const sections = prev.sections.map((section) => {
-          if (section.id !== dragState.sectionId) return section;
-          if (dragState.mode === 'resize') {
+      const dx = point.x - dragState.startX;
+      const dy = point.y - dragState.startY;
+      setLayoutConfig((prev) => {
+        if (dragState.kind === 'section') {
+          let sectionDx = 0;
+          let sectionDy = 0;
+          const sections = prev.sections.map((section) => {
+            if (section.id !== dragState.sectionId) return section;
+            if (dragState.mode === 'resize') {
+              return {
+                ...section,
+                width: Math.max(220, dragState.originWidth + dx),
+                height: Math.max(56, dragState.originHeight + dy),
+                autoFill: false,
+              };
+            }
+            sectionDx = dragState.originX + dx - dragState.originX;
+            sectionDy = dragState.originY + dy - dragState.originY;
             return {
               ...section,
-              width: Math.max(220, dragState.originWidth + dx),
-              height: Math.max(56, dragState.originHeight + dy),
+              x: dragState.originX + dx,
+              y: dragState.originY + dy,
+              autoFill: false,
+            };
+          });
+          if (dragState.mode === 'resize') {
+            return { ...prev, sections };
+          }
+          return {
+            ...prev,
+            sections,
+            items: prev.items.map((item) =>
+              item.sectionId === dragState.sectionId
+                ? { ...item, x: item.x + sectionDx, y: item.y + sectionDy, autoFill: false }
+                : item,
+            ),
+          };
+        }
+
+        const items = prev.items.map((item) => {
+          if (!dragState.itemIds.includes(item.id)) return item;
+          const origin = dragState.origins[item.id];
+          if (!origin) return item;
+          if (dragState.mode === 'resize') {
+            return {
+              ...item,
+              width: Math.max(12, origin.width + dx),
+              height: Math.max(10, origin.height + dy),
               autoFill: false,
             };
           }
-          sectionDx = dragState.originX + dx - dragState.originX;
-          sectionDy = dragState.originY + dy - dragState.originY;
           return {
-            ...section,
-            x: dragState.originX + dx,
-            y: dragState.originY + dy,
+            ...item,
+            x: origin.x + dx,
+            y: origin.y + dy,
             autoFill: false,
           };
         });
-        if (dragState.mode === 'resize') {
-          return { ...prev, sections };
-        }
-        return {
-          ...prev,
-          sections,
-          items: prev.items.map((item) =>
-            item.sectionId === dragState.sectionId
-              ? { ...item, x: item.x + sectionDx, y: item.y + sectionDy, autoFill: false }
-              : item,
-          ),
-        };
-      }
-
-      const items = prev.items.map((item) => {
-        if (!dragState.itemIds.includes(item.id)) return item;
-        const origin = dragState.origins[item.id];
-        if (!origin) return item;
-        if (dragState.mode === 'resize') {
-          return {
-            ...item,
-            width: Math.max(12, origin.width + dx),
-            height: Math.max(10, origin.height + dy),
-            autoFill: false,
-          };
-        }
-        return {
-          ...item,
-          x: origin.x + dx,
-          y: origin.y + dy,
-          autoFill: false,
-        };
+        return { ...prev, items };
       });
-      return { ...prev, items };
-    });
-  }, [dragState, toSvgPoint]);
+    },
+    [dragState, toSvgPoint],
+  );
 
   const handlePointerUp = useCallback(() => {
     if (!dragState) return;
@@ -556,7 +568,9 @@ export const App = (): React.JSX.Element => {
 
           const newMembers = Array.from(new Set([...dragState.itemIds, candidate.id]));
           mergeGroups = [
-            ...prev.mergeGroups.filter((group) => !group.memberItemIds.some((id) => newMembers.includes(id))),
+            ...prev.mergeGroups.filter(
+              (group) => !group.memberItemIds.some((id) => newMembers.includes(id)),
+            ),
             {
               id: `merge-${Date.now()}`,
               type: candidate.type,
@@ -639,27 +653,8 @@ export const App = (): React.JSX.Element => {
   };
 
   const saveLayout = async (): Promise<void> => {
-    setSavePending(true);
     setSaveStatus(null);
-    try {
-      const payload = { ...layoutConfig, songSlug, templateId: 'standard' };
-      const res = await fetch(`/api/layouts/${songSlug}?template=standard`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        throw new Error(`Failed to save layout (${res.status})`);
-      }
-      const saved = (await res.json()) as SheetLayoutConfig;
-      setLayoutConfig(saved);
-      setSaveStatus('Saved layout.');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to save layout.';
-      setSaveStatus(message);
-    } finally {
-      setSavePending(false);
-    }
+    await saveLayoutMutation.mutateAsync(layoutConfig);
   };
 
   const exportSvg = (): void => {
@@ -682,7 +677,8 @@ export const App = (): React.JSX.Element => {
   const selectedMergeGroup = useMemo(
     () =>
       layoutConfig.mergeGroups.find(
-        (group) => selectedItemId !== null && group.merged && group.memberItemIds.includes(selectedItemId),
+        (group) =>
+          selectedItemId !== null && group.merged && group.memberItemIds.includes(selectedItemId),
       ) ?? null,
     [layoutConfig.mergeGroups, selectedItemId],
   );
@@ -717,7 +713,8 @@ export const App = (): React.JSX.Element => {
     const moving = layoutConfig.items.find((item) => item.id === movingId);
     if (!moving) return guides;
     for (const other of layoutConfig.items) {
-      if (dragState.itemIds.includes(other.id) || other.parked || other.type !== moving.type) continue;
+      if (dragState.itemIds.includes(other.id) || other.parked || other.type !== moving.type)
+        continue;
       const movingCx = moving.x + moving.width / 2;
       const movingCy = moving.y + moving.height / 2;
       const otherCx = other.x + other.width / 2;
@@ -761,7 +758,9 @@ export const App = (): React.JSX.Element => {
         items: prev.items.map((item) =>
           item.id === selectedItemId ? { ...base, parked: false, autoFill: true } : item,
         ),
-        mergeGroups: prev.mergeGroups.filter((group) => !group.memberItemIds.includes(selectedItemId)),
+        mergeGroups: prev.mergeGroups.filter(
+          (group) => !group.memberItemIds.includes(selectedItemId),
+        ),
       }));
     }
   };
@@ -796,7 +795,8 @@ export const App = (): React.JSX.Element => {
               introMeasures.length > 0
                 ? [
                     ...introMeasures.map((item) => item.x),
-                    introMeasures[introMeasures.length - 1].x + introMeasures[introMeasures.length - 1].width,
+                    introMeasures[introMeasures.length - 1].x +
+                      introMeasures[introMeasures.length - 1].width,
                   ]
                 : undefined
             }
@@ -810,7 +810,9 @@ export const App = (): React.JSX.Element => {
             annotationX={song.verseAnnotationX}
             rows={song.verseRows}
             y={section.y}
-            rowYOffsets={verseRows.map((item, i) => item.y - (section.y + VERSE_ROW_TOP_OFFSET + i * ROW_HEIGHT))}
+            rowYOffsets={verseRows.map(
+              (item, i) => item.y - (section.y + VERSE_ROW_TOP_OFFSET + i * ROW_HEIGHT),
+            )}
           />
         );
       case 'chorus':
@@ -820,7 +822,9 @@ export const App = (): React.JSX.Element => {
             annotationX={song.chorusAnnotationX}
             rows={song.chorusRows}
             y={section.y}
-            rowYOffsets={chorusRows.map((item, i) => item.y - (section.y + CHORUS_ROW_TOP_OFFSET + i * ROW_HEIGHT))}
+            rowYOffsets={chorusRows.map(
+              (item, i) => item.y - (section.y + CHORUS_ROW_TOP_OFFSET + i * ROW_HEIGHT),
+            )}
           />
         );
       case 'harmonicMap':
@@ -876,9 +880,9 @@ export const App = (): React.JSX.Element => {
               type="button"
               className="rounded bg-[#1f4a2a] px-3 py-1 disabled:opacity-60"
               onClick={() => void saveLayout()}
-              disabled={savePending}
+              disabled={saveLayoutMutation.isPending}
             >
-              {savePending ? 'Saving…' : 'Save Layout'}
+              {saveLayoutMutation.isPending ? 'Saving…' : 'Save Layout'}
             </button>
             {(selectedSectionId || selectedItemId) && (
               <button
@@ -890,7 +894,11 @@ export const App = (): React.JSX.Element => {
               </button>
             )}
             {selectedMergeGroup && (
-              <button type="button" className="rounded bg-[#6a2d2d] px-3 py-1" onClick={splitSelectedMergeGroup}>
+              <button
+                type="button"
+                className="rounded bg-[#6a2d2d] px-3 py-1"
+                onClick={splitSelectedMergeGroup}
+              >
                 Split Merged Items
               </button>
             )}
@@ -898,7 +906,9 @@ export const App = (): React.JSX.Element => {
         )}
         {saveStatus && <span className="text-[#bcd]">{saveStatus}</span>}
         {mode === 'edit' && (
-          <span className="text-[#9fb0c9]">Arrow keys nudge selection, Shift+Arrow nudges by 10.</span>
+          <span className="text-[#9fb0c9]">
+            Arrow keys nudge selection, Shift+Arrow nudges by 10.
+          </span>
         )}
       </div>
       <div className="mt-5 inline-block">
@@ -907,7 +917,11 @@ export const App = (): React.JSX.Element => {
             Generating sheet for {song.title}…
           </div>
         ) : (
-          <MapleCanvas svgRef={svgRef} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
+          <MapleCanvas
+            svgRef={svgRef}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+          >
             <>
               {activeSections.map((section) => (
                 <g key={section.id} transform={`translate(${section.x - 48}, 0)`}>
@@ -1004,7 +1018,12 @@ export const App = (): React.JSX.Element => {
                               fill="#f97316"
                               opacity={0.9}
                             />
-                            <text x={item.x + item.width - 43} y={item.y + 10} className="hl" fill="#1f2937">
+                            <text
+                              x={item.x + item.width - 43}
+                              y={item.y + 10}
+                              className="hl"
+                              fill="#1f2937"
+                            >
                               merged x{mergedCount}
                             </text>
                           </>
@@ -1049,47 +1068,55 @@ export const App = (): React.JSX.Element => {
         <div className="mt-3 w-[794px] rounded bg-[#2d2d2d] p-3 text-xs text-[#ddd]">
           <div className="mb-2 font-semibold text-[#f0d9ad]">Parking Lot</div>
           {parkedSections.length === 0 && parkedItems.length === 0 ? (
-            <div className="text-[#aaa]">Drag sections or items off the page (bottom-right) to park them.</div>
+            <div className="text-[#aaa]">
+              Drag sections or items off the page (bottom-right) to park them.
+            </div>
           ) : (
             <>
               {parkedSections.map((section, i) => (
-              <div key={section.id} className="mb-1 flex items-center justify-between rounded bg-[#383838] px-2 py-1">
-                <span>
-                  #{i + 1} [section] {section.label}
-                </span>
-                <button
-                  type="button"
-                  className="rounded bg-[#4b628f] px-2 py-1 text-[11px]"
-                  onClick={() =>
-                    setLayoutConfig((prev) => ({
-                      ...prev,
-                      sections: prev.sections.map((s) =>
-                        s.id === section.id
-                          ? {
-                              ...defaultLayout.sections.find((base) => base.id === section.id),
-                              parked: false,
-                              autoFill: true,
-                            } as SheetLayoutSectionConfig
-                          : s,
-                      ),
-                      parkingLot: {
-                        ...prev.parkingLot,
-                        sectionIds: prev.parkingLot.sectionIds.filter((id) => id !== section.id),
-                      },
-                      items: prev.items.map((item) => {
-                        if (item.sectionId !== section.id) return item;
-                        const baseItem = defaultLayout.items.find((base) => base.id === item.id);
-                        return baseItem ? { ...baseItem, parked: false, autoFill: true } : item;
-                      }),
-                    }))
-                  }
+                <div
+                  key={section.id}
+                  className="mb-1 flex items-center justify-between rounded bg-[#383838] px-2 py-1"
                 >
-                  Return To Page
-                </button>
-              </div>
+                  <span>
+                    #{i + 1} [section] {section.label}
+                  </span>
+                  <button
+                    type="button"
+                    className="rounded bg-[#4b628f] px-2 py-1 text-[11px]"
+                    onClick={() =>
+                      setLayoutConfig((prev) => ({
+                        ...prev,
+                        sections: prev.sections.map((s) =>
+                          s.id === section.id
+                            ? ({
+                                ...defaultLayout.sections.find((base) => base.id === section.id),
+                                parked: false,
+                                autoFill: true,
+                              } as SheetLayoutSectionConfig)
+                            : s,
+                        ),
+                        parkingLot: {
+                          ...prev.parkingLot,
+                          sectionIds: prev.parkingLot.sectionIds.filter((id) => id !== section.id),
+                        },
+                        items: prev.items.map((item) => {
+                          if (item.sectionId !== section.id) return item;
+                          const baseItem = defaultLayout.items.find((base) => base.id === item.id);
+                          return baseItem ? { ...baseItem, parked: false, autoFill: true } : item;
+                        }),
+                      }))
+                    }
+                  >
+                    Return To Page
+                  </button>
+                </div>
               ))}
               {parkedItems.map((item, i) => (
-                <div key={item.id} className="mb-1 flex items-center justify-between rounded bg-[#3a3430] px-2 py-1">
+                <div
+                  key={item.id}
+                  className="mb-1 flex items-center justify-between rounded bg-[#3a3430] px-2 py-1"
+                >
                   <span>
                     #{i + 1} [item] {item.type} ({item.sectionId})
                   </span>
@@ -1112,7 +1139,9 @@ export const App = (): React.JSX.Element => {
                           ...prev.parkingLot,
                           itemIds: prev.parkingLot.itemIds.filter((id) => id !== item.id),
                         },
-                        mergeGroups: prev.mergeGroups.filter((group) => !group.memberItemIds.includes(item.id)),
+                        mergeGroups: prev.mergeGroups.filter(
+                          (group) => !group.memberItemIds.includes(item.id),
+                        ),
                       }))
                     }
                   >

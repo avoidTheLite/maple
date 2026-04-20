@@ -6,7 +6,7 @@ Maple is a guitar sheet music generator that produces printable SVG reference pa
 
 | Package           | Path                | Description                       |
 | ----------------- | ------------------- | --------------------------------- |
-| `@maple/client`   | `apps/client`       | React + Vite frontend (port 5173) |
+| `@maple/web`      | `apps/web`          | React + Vite frontend (port 5173) |
 | `@maple/api`      | `apps/api`          | Express 5 backend (port 3001)     |
 | `@maple/types`    | `packages/types`    | Shared TypeScript types           |
 | `@maple/tsconfig` | `packages/tsconfig` | Shared TS base config             |
@@ -61,7 +61,7 @@ After changing prompt text, tool schema, or user message template, CI-local cach
 
 - **`packageManager` field**: The root `package.json` must include a `"packageManager"` field (e.g. `"pnpm@10.32.1"`) or Turborepo will refuse to resolve workspaces.
 - **`pnpm.onlyBuiltDependencies`**: The root `package.json` includes `"pnpm": { "onlyBuiltDependencies": ["esbuild"] }` to allow esbuild post-install scripts without interactive prompts.
-- **API type-check errors**: `pnpm run build` fails for `@maple/api` due to `@types/node@25` incompatibility with transitive dependencies. This does not affect runtime (`tsx watch` skips type-checking). The client builds and type-checks cleanly.
+- **API build model**: `@maple/api` intentionally uses `tsc --noEmit` for the `build` step and `tsx src/index.ts` for `start` so runtime matches the NodeNext `.ts`-extension import strategy.
 - **API tests**: `apps/api` uses Vitest (`src/**/*.test.ts`). `pnpm test` runs Turbo `test` across workspaces; the client uses `--passWithNoTests` until UI tests exist. HTTP routes are covered in [`apps/api/src/app.integration.test.ts`](apps/api/src/app.integration.test.ts) with **Supertest** and `createApp(getDeps)` (mock LLM, no `ANTHROPIC_API_KEY`).
 - **Dev LLM logging**: When not in production and not under Vitest, `POST /api/generate` logs **cache HIT** vs **MISS** (short cache key prefix + title/artist + mode) and, after a live model call, **token usage** from the response (`input_tokens`, `output_tokens`, etc.). See [`apps/api/src/generate/llm/devLlmLog.ts`](apps/api/src/generate/llm/devLlmLog.ts).
 - **Content filtering**: Anthropic's API may block generation for certain copyrighted songs. This is an external policy, not a bug.
@@ -69,10 +69,12 @@ After changing prompt text, tool schema, or user message template, CI-local cach
 
 ### Build & check commands
 
-| Action            | Command                              |
-| ----------------- | ------------------------------------ |
-| Install deps      | `pnpm install`                       |
-| Dev servers       | `pnpm dev`                           |
-| Build all         | `pnpm run build`                     |
-| Type-check client | `cd apps/client && npx tsc --noEmit` |
-| Run tests         | `pnpm test`                          |
+| Action            | Command                           |
+| ----------------- | --------------------------------- |
+| Install deps      | `pnpm install`                    |
+| Dev servers       | `pnpm dev`                        |
+| Build all         | `pnpm run build`                  |
+| Lint              | `pnpm lint`                       |
+| Format check      | `pnpm format:check`               |
+| Type-check client | `cd apps/web && npx tsc --noEmit` |
+| Run tests         | `pnpm test`                       |

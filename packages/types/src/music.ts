@@ -51,10 +51,10 @@ export interface HarmonicCol {
 // ---------------------------------------------------------------------------
 
 export type SongSection =
-  | { type: 'introRiff';   data: IntroRiffData }
-  | { type: 'verse';       annotation: string; annotationX?: number; rows: LyricRow[] }
-  | { type: 'chorus';      annotation: string; annotationX?: number; rows: LyricRow[] }
-  | { type: 'bridge';      annotation: string; annotationX?: number; rows: LyricRow[] }
+  | { type: 'introRiff'; data: IntroRiffData }
+  | { type: 'verse'; annotation: string; annotationX?: number; rows: LyricRow[] }
+  | { type: 'chorus'; annotation: string; annotationX?: number; rows: LyricRow[] }
+  | { type: 'bridge'; annotation: string; annotationX?: number; rows: LyricRow[] }
   | { type: 'harmonicMap'; cols: HarmonicCol[] }
   | { type: 'notes' };
 

@@ -1,4 +1,9 @@
-import type { SheetLayoutConfig, SheetLayoutItemConfig, SheetLayoutSectionConfig, SongData } from '@maple/types';
+import type {
+  SheetLayoutConfig,
+  SheetLayoutItemConfig,
+  SheetLayoutSectionConfig,
+  SongData,
+} from '@maple/types';
 import {
   BAND_CHORUS_HEIGHT,
   BAND_HARMONIC_MAP_HEIGHT,
@@ -71,7 +76,14 @@ export function buildDefaultSections(): SheetLayoutSectionConfig[] {
     createSection('intro', 'introRiff', 'Intro Riff', 1, yIntro, BAND_INTRO_RIFF_HEIGHT),
     createSection('verse', 'verse', 'Verse', 2, yVerse, BAND_VERSE_HEIGHT),
     createSection('chorus', 'chorus', 'Chorus', 3, yChorus, BAND_CHORUS_HEIGHT),
-    createSection('harmonic', 'harmonicMap', 'Harmonic Map', 4, yHarmonic, BAND_HARMONIC_MAP_HEIGHT),
+    createSection(
+      'harmonic',
+      'harmonicMap',
+      'Harmonic Map',
+      4,
+      yHarmonic,
+      BAND_HARMONIC_MAP_HEIGHT,
+    ),
     createSection('notes', 'notes', 'Notes', 5, yNotes, PAGE_HEIGHT - yNotes),
   ];
 }
@@ -81,7 +93,10 @@ function getSectionY(sections: SheetLayoutSectionConfig[], sectionId: string): n
   return section?.y ?? 0;
 }
 
-export function buildDefaultItems(song: SongData, sections: SheetLayoutSectionConfig[]): SheetLayoutItemConfig[] {
+export function buildDefaultItems(
+  song: SongData,
+  sections: SheetLayoutSectionConfig[],
+): SheetLayoutItemConfig[] {
   const items: SheetLayoutItemConfig[] = [];
 
   const introY = getSectionY(sections, 'intro');
@@ -152,7 +167,9 @@ export function buildDefaultItems(song: SongData, sections: SheetLayoutSectionCo
 
   const harmonicY = getSectionY(sections, 'harmonic');
   song.harmonicCols.forEach((_, i) => {
-    const x = HARMONIC_COL_X[i] ?? (HARMONIC_COL_X[HARMONIC_COL_X.length - 1] + 172 * (i - HARMONIC_COL_X.length + 1));
+    const x =
+      HARMONIC_COL_X[i] ??
+      HARMONIC_COL_X[HARMONIC_COL_X.length - 1] + 172 * (i - HARMONIC_COL_X.length + 1);
     items.push({
       id: `harmonic-col-${i}`,
       sectionId: 'harmonic',

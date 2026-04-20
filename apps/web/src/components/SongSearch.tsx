@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { cn } from '../lib/utils.ts';
 
 interface SongSearchProps {
   onGenerate: (title: string, artist: string) => void;
@@ -35,7 +36,10 @@ export const SongSearch = ({ onGenerate, loading, error }: SongSearchProps): Rea
       />
       <button
         type="submit"
-        className="rounded-sm border-none px-4 py-1.5 font-serif text-[13px] tracking-widest disabled:cursor-not-allowed"
+        className={cn(
+          'rounded-sm border-none px-4 py-1.5 font-serif text-[13px] tracking-widest disabled:cursor-not-allowed',
+          loading && 'opacity-80',
+        )}
         style={{ background: loading ? '#444' : '#8B6914', color: loading ? '#888' : '#FDF6E8' }}
         disabled={loading || !title.trim() || !artist.trim()}
       >

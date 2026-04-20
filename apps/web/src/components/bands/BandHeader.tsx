@@ -4,7 +4,6 @@ import {
   DIAGRAM_HEIGHT,
   DIAGRAM_ROW_GAP,
   DIAGRAM_SPACING,
-  DIAGRAM_WIDTH,
   DIAGRAM_X_START,
   DIAGRAMS_Y,
   FORM_FONT_SIZE,
@@ -57,8 +56,24 @@ export const BandHeader = ({ song, y }: BandHeaderProps): React.JSX.Element => {
       <text x="490" y={y + 44} className="met">
         Mode: {mode}
       </text>
-      <line x1="48" y1={y + 38} x2="475" y2={y + 38} stroke="#A07828" strokeWidth="0.5" opacity="0.4" />
-      <line x1="48" y1={y + 50} x2="740" y2={y + 50} stroke="#A07828" strokeWidth="0.5" opacity="0.4" />
+      <line
+        x1="48"
+        y1={y + 38}
+        x2="475"
+        y2={y + 38}
+        stroke="#A07828"
+        strokeWidth="0.5"
+        opacity="0.4"
+      />
+      <line
+        x1="48"
+        y1={y + 50}
+        x2="740"
+        y2={y + 50}
+        stroke="#A07828"
+        strokeWidth="0.5"
+        opacity="0.4"
+      />
 
       <text x="48" y={y + 62} className="sec">
         CHORDS USED
@@ -81,7 +96,14 @@ export const BandHeader = ({ song, y }: BandHeaderProps): React.JSX.Element => {
       <clipPath id="form-clip">
         <rect x={formStartX} y={y + DIAGRAMS_Y} width={formWidth} height="46" />
       </clipPath>
-      <rect x={formStartX} y={y + DIAGRAMS_Y} width={formWidth} height="46" className="cbox" rx="3" />
+      <rect
+        x={formStartX}
+        y={y + DIAGRAMS_Y}
+        width={formWidth}
+        height="46"
+        className="cbox"
+        rx="3"
+      />
       <g clipPath="url(#form-clip)">
         {structureLines.map((line, i) => (
           <text

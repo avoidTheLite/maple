@@ -9,7 +9,12 @@ const TEMPLATE_ID_RE = /^[a-z0-9][a-z0-9_-]*$/i;
 export class LayoutError extends Error {
   constructor(
     message: string,
-    public readonly code: 'INVALID_SLUG' | 'INVALID_TEMPLATE' | 'NOT_FOUND' | 'INVALID_JSON' | 'VALIDATION',
+    public readonly code:
+      | 'INVALID_SLUG'
+      | 'INVALID_TEMPLATE'
+      | 'NOT_FOUND'
+      | 'INVALID_JSON'
+      | 'VALIDATION',
   ) {
     super(message);
     this.name = 'LayoutError';

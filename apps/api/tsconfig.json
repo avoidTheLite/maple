@@ -1,12 +1,12 @@
 {
   "extends": "@maple/tsconfig/base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
+    "noEmit": true,
+    "skipLibCheck": true,
     "paths": {
       "@maple/types": ["../../packages/types/src/music.ts"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../../packages/types/src"],
   "exclude": ["src/**/*.test.ts"]
 }

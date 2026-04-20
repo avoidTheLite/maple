@@ -14,6 +14,14 @@ Completed on branch `initialBuild`.
 - Types in `apps/api/src/generate/llm/types.ts` were package-scoped → moved to `apps/api/src/types.ts`
 - `useMutation` (TanStack Query) used for the generate action per style guide; last successful song held in `useState`
 
+## Post-remediation updates (standards refresh)
+
+- API runtime is intentionally **no-emit TypeScript**: `apps/api` uses `tsc --noEmit` for build checks and `tsx src/index.ts` for startup.
+- Root standards gates are now explicit command targets: `pnpm lint`, `pnpm lint:fix`, `pnpm format`, and `pnpm format:check`.
+- Node runtime baseline is pinned to 22 (`.nvmrc` + root `package.json` engines).
+- Client API boundaries validate response payloads before use through `apps/web/src/api/schemas.ts`.
+- Layout persistence and hydration use TanStack Query hooks via `apps/web/src/api/client.ts`.
+
 ---
 
 ## Phase 0 — Baseline
@@ -46,7 +54,7 @@ Completed on branch `initialBuild`.
 - [x] Create `apps/api/src/types.ts` — consolidated package-scoped types (`LlmClient`, `LlmMessage`, `CreateMessageParams`, `LlmCacheEnvelope`, `LlmCacheMode`, `GenerateDeps`)
 - [x] Delete `apps/api/src/generate/llm/types.ts`; update all import paths to `../../types.ts` / `../types.ts`
 - [x] Add backwards-compat re-export in `generateService.ts`: `export type { GenerateDeps, LlmCacheMode } from '../types.ts'`
-- [x] Create `apps/api/src/config.ts` — Zod env validation at startup (PORT, NODE_ENV, LOG_LEVEL, ANTHROPIC_API_KEY, MAPLE_LLM_*)
+- [x] Create `apps/api/src/config.ts` — Zod env validation at startup (PORT, NODE*ENV, LOG_LEVEL, ANTHROPIC_API_KEY, MAPLE_LLM*\*)
 - [x] Write tests for `config.ts` (`config.test.ts`) — defaults and PORT coercion
 - [x] Add `@maple/util: workspace:*` to `apps/api/package.json`; add `pino-pretty` devDep
 - [x] Run tests ✅
@@ -122,39 +130,39 @@ Completed on branch `initialBuild`.
 
 ## Style Guide Gaps Noted
 
-| Gap | Location | Notes |
-|-----|----------|-------|
+| Gap                            | Location                                         | Notes                                                                                                                                                                             |
+| ------------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SVG styling standard undefined | All SVG components in `apps/web/src/components/` | Tailwind rule excludes SVG elements. SVG design pattern and class conventions to be defined when the project's visual system matures. Tracked in `memory/style_guide_svg_gap.md`. |
 
 ---
 
 ## Files Created
 
-| File | Purpose |
-|------|---------|
-| `.prettierrc` | Repo-wide Prettier config |
-| `apps/api/src/types.ts` | Package-scoped API types |
-| `apps/api/src/config.ts` | Zod env validation |
-| `apps/api/src/config.test.ts` | Tests for env config |
-| `apps/web/src/index.css` | Tailwind entry + CSS theme tokens |
-| `apps/web/src/lib/utils.ts` | `cn()` helper |
-| `packages/util/package.json` | `@maple/util` package manifest |
-| `packages/util/tsconfig.json` | TypeScript config for util |
-| `packages/util/vitest.config.ts` | Vitest config for util |
-| `packages/util/src/logger.ts` | `createLogger` (Pino wrapper) |
-| `packages/util/src/logger.test.ts` | Logger tests |
-| `packages/util/src/errorHandler.ts` | `AppError`, `errorHandler` middleware |
-| `packages/util/src/errorHandler.test.ts` | Error handler tests |
-| `packages/util/src/index.ts` | Public barrel export |
-| `packages/eslint-config/package.json` | `@maple/eslint-config` manifest |
-| `packages/eslint-config/index.js` | Shared ESLint flat config |
-| `eslint.config.js` | Root ESLint config |
+| File                                     | Purpose                               |
+| ---------------------------------------- | ------------------------------------- |
+| `.prettierrc`                            | Repo-wide Prettier config             |
+| `apps/api/src/types.ts`                  | Package-scoped API types              |
+| `apps/api/src/config.ts`                 | Zod env validation                    |
+| `apps/api/src/config.test.ts`            | Tests for env config                  |
+| `apps/web/src/index.css`                 | Tailwind entry + CSS theme tokens     |
+| `apps/web/src/lib/utils.ts`              | `cn()` helper                         |
+| `packages/util/package.json`             | `@maple/util` package manifest        |
+| `packages/util/tsconfig.json`            | TypeScript config for util            |
+| `packages/util/vitest.config.ts`         | Vitest config for util                |
+| `packages/util/src/logger.ts`            | `createLogger` (Pino wrapper)         |
+| `packages/util/src/logger.test.ts`       | Logger tests                          |
+| `packages/util/src/errorHandler.ts`      | `AppError`, `errorHandler` middleware |
+| `packages/util/src/errorHandler.test.ts` | Error handler tests                   |
+| `packages/util/src/index.ts`             | Public barrel export                  |
+| `packages/eslint-config/package.json`    | `@maple/eslint-config` manifest       |
+| `packages/eslint-config/index.js`        | Shared ESLint flat config             |
+| `eslint.config.js`                       | Root ESLint config                    |
 
 ## Files Deleted
 
-| File | Reason |
-|------|--------|
-| `apps/client/src/components/MapleBand.tsx` | Dead code — unused |
-| `apps/client/src/components/music/Measure.tsx` | Dead code — unused |
-| `apps/client/src/types/music.ts` | Duplicate of `packages/types/src/music.ts` |
-| `apps/api/src/generate/llm/types.ts` | Consolidated into `apps/api/src/types.ts` |
+| File                                           | Reason                                     |
+| ---------------------------------------------- | ------------------------------------------ |
+| `apps/client/src/components/MapleBand.tsx`     | Dead code — unused                         |
+| `apps/client/src/components/music/Measure.tsx` | Dead code — unused                         |
+| `apps/client/src/types/music.ts`               | Duplicate of `packages/types/src/music.ts` |
+| `apps/api/src/generate/llm/types.ts`           | Consolidated into `apps/api/src/types.ts`  |

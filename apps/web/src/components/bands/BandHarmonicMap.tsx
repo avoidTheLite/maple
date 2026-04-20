@@ -14,7 +14,11 @@ interface BandHarmonicMapProps {
   colXOverrides?: number[];
 }
 
-export const BandHarmonicMap = ({ cols, y, colXOverrides }: BandHarmonicMapProps): React.JSX.Element => {
+export const BandHarmonicMap = ({
+  cols,
+  y,
+  colXOverrides,
+}: BandHarmonicMapProps): React.JSX.Element => {
   const boxY = y + BOX_OFFSET;
   const rowY = ROW_OFFSETS.map((o) => y + o);
 

@@ -5,14 +5,16 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "@maple/api#build": {
+      "outputs": []
+    },
     "dev": {
       "persistent": true,
       "cache": false
     },
     "test": {
       "dependsOn": ["^build"],
-      "inputs": ["src/**", "*.config.ts"],
-      "outputs": ["coverage/**"]
+      "inputs": ["src/**", "*.config.ts"]
     }
   }
 }
