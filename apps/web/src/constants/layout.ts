@@ -11,8 +11,8 @@ export const HEADER_DIVIDER_Y = 192;
  */
 export const BAND_HEADER_HEIGHT = 192;
 export const BAND_INTRO_RIFF_HEIGHT = 143; // 141 content + 2 gap
-export const BAND_VERSE_HEIGHT = 140;       // 138 content + 2 gap
-export const BAND_CHORUS_HEIGHT = 141;      // 139 content + 2 gap
+export const BAND_VERSE_HEIGHT = 140; // 138 content + 2 gap
+export const BAND_CHORUS_HEIGHT = 141; // 139 content + 2 gap
 export const BAND_HARMONIC_MAP_HEIGHT = 140; // 138 content + 2 gap
 // BandNotes fills the remaining page — no fixed height.
 

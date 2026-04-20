@@ -11,9 +11,14 @@ const DIVIDER_OFFSET = 138;
 interface BandHarmonicMapProps {
   cols: HarmonicCol[];
   y: number;
+  colXOverrides?: number[];
 }
 
-export const BandHarmonicMap = ({ cols, y }: BandHarmonicMapProps): React.JSX.Element => {
+export const BandHarmonicMap = ({
+  cols,
+  y,
+  colXOverrides,
+}: BandHarmonicMapProps): React.JSX.Element => {
   const boxY = y + BOX_OFFSET;
   const rowY = ROW_OFFSETS.map((o) => y + o);
 
@@ -38,7 +43,7 @@ export const BandHarmonicMap = ({ cols, y }: BandHarmonicMapProps): React.JSX.El
       ))}
 
       {cols.map((col, ci) => {
-        const x = COL_X[ci];
+        const x = colXOverrides?.[ci] ?? COL_X[ci];
         return (
           <g key={ci}>
             <text x={x} y={rowY[0]} className="met" style={{ fontWeight: 'bold' }}>

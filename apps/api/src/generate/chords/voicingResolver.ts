@@ -17,9 +17,7 @@ export function resolveVoicings(
 ): Chord[] {
   return chords.map((chord) => ({
     name: chord.name,
-    frets: [
-      ...(VOICING_DICTIONARY[chord.name] ?? chord.frets ?? FALLBACK_FRETS),
-    ] as number[],
+    frets: [...(VOICING_DICTIONARY[chord.name] ?? chord.frets ?? FALLBACK_FRETS)] as number[],
   }));
 }
 

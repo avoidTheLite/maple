@@ -45,7 +45,12 @@ describe('resolveVoicings — output shape', () => {
   });
 
   it('handles multiple chords in one call', () => {
-    const result = resolveVoicings([{ name: 'D' }, { name: 'Cadd9' }, { name: 'G' }, { name: 'A' }]);
+    const result = resolveVoicings([
+      { name: 'D' },
+      { name: 'Cadd9' },
+      { name: 'G' },
+      { name: 'A' },
+    ]);
     expect(result).toHaveLength(4);
     expect(result[0].frets).toEqual([...VOICING_DICTIONARY['D']!]);
     expect(result[1].frets).toEqual([...VOICING_DICTIONARY['Cadd9']!]);

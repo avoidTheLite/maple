@@ -51,10 +51,10 @@ export interface HarmonicCol {
 // ---------------------------------------------------------------------------
 
 export type SongSection =
-  | { type: 'introRiff';   data: IntroRiffData }
-  | { type: 'verse';       annotation: string; annotationX?: number; rows: LyricRow[] }
-  | { type: 'chorus';      annotation: string; annotationX?: number; rows: LyricRow[] }
-  | { type: 'bridge';      annotation: string; annotationX?: number; rows: LyricRow[] }
+  | { type: 'introRiff'; data: IntroRiffData }
+  | { type: 'verse'; annotation: string; annotationX?: number; rows: LyricRow[] }
+  | { type: 'chorus'; annotation: string; annotationX?: number; rows: LyricRow[] }
+  | { type: 'bridge'; annotation: string; annotationX?: number; rows: LyricRow[] }
   | { type: 'harmonicMap'; cols: HarmonicCol[] }
   | { type: 'notes' };
 
@@ -97,6 +97,68 @@ export interface SongData {
   chorusAnnotationX: number;
   chorusRows: LyricRow[];
   harmonicCols: HarmonicCol[];
+}
+
+// ---------------------------------------------------------------------------
+// Layout configuration (separate from musical content)
+// ---------------------------------------------------------------------------
+
+export type LayoutSectionType = SongSection['type'] | 'header';
+
+export type LayoutItemType =
+  | 'introMeasure'
+  | 'introTabColumn'
+  | 'verseRow'
+  | 'chorusRow'
+  | 'harmonicColumn'
+  | 'notesBlock';
+
+export interface SheetLayoutSectionConfig {
+  id: string;
+  type: LayoutSectionType;
+  label: string;
+  order: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  autoFill: boolean;
+  parked: boolean;
+}
+
+export interface SheetLayoutItemConfig {
+  id: string;
+  sectionId: string;
+  type: LayoutItemType;
+  index: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  autoFill: boolean;
+  parked: boolean;
+}
+
+export interface SheetLayoutMergeGroup {
+  id: string;
+  type: LayoutItemType;
+  memberItemIds: string[];
+  merged: boolean;
+}
+
+export interface SheetLayoutParkingLot {
+  itemIds: string[];
+  sectionIds: string[];
+}
+
+export interface SheetLayoutConfig {
+  schemaVersion: string;
+  templateId: string;
+  songSlug: string;
+  sections: SheetLayoutSectionConfig[];
+  items: SheetLayoutItemConfig[];
+  mergeGroups: SheetLayoutMergeGroup[];
+  parkingLot: SheetLayoutParkingLot;
 }
 
 // ---------------------------------------------------------------------------

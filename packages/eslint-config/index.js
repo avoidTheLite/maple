@@ -6,6 +6,9 @@ import prettier from 'eslint-config-prettier';
 
 /** @type {import('typescript-eslint').Config} */
 export default tseslint.config(
+  {
+    ignores: ['**/dist/**', '**/coverage/**', '**/.turbo/**', '**/node_modules/**'],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

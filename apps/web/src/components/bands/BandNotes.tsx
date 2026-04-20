@@ -4,7 +4,7 @@ const LABEL_OFFSET = 13;
 const FIRST_LINE_OFFSET = 26;
 const LINE_SPACING = 22;
 const FOOTER_LINE_Y = A4_HEIGHT - 19; // 1103
-const FOOTER_TEXT_Y = A4_HEIGHT - 7;  // 1115
+const FOOTER_TEXT_Y = A4_HEIGHT - 7; // 1115
 
 interface BandNotesProps {
   title: string;
@@ -13,7 +13,12 @@ interface BandNotesProps {
   y: number;
 }
 
-export const BandNotes = ({ title, artist, pageNumber = 1, y }: BandNotesProps): React.JSX.Element => {
+export const BandNotes = ({
+  title,
+  artist,
+  pageNumber = 1,
+  y,
+}: BandNotesProps): React.JSX.Element => {
   const firstLineY = y + FIRST_LINE_OFFSET;
   const available = FOOTER_LINE_Y - firstLineY;
   const lineCount = Math.max(1, Math.floor(available / LINE_SPACING));

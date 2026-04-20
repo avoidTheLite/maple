@@ -6,18 +6,20 @@ const logger = createLogger({ module: 'errorHandler', level: 'info' });
 export class AppError extends Error {
   public readonly statusCode: number;
   public readonly isOperational: boolean;
+  public readonly details?: unknown;
 
-  constructor(message: string, statusCode: number, isOperational = true) {
+  constructor(message: string, statusCode: number, isOperational = true, details?: unknown) {
     super(message);
     this.name = 'AppError';
     this.statusCode = statusCode;
     this.isOperational = isOperational;
+    this.details = details;
   }
 }
 
 export class ValidationError extends AppError {
-  constructor(message = 'Invalid request') {
-    super(message, 400);
+  constructor(message = 'Invalid request', details?: unknown) {
+    super(message, 400, true, details);
     this.name = 'ValidationError';
   }
 }
@@ -37,7 +39,10 @@ export function errorHandler(
 ): void {
   if (err instanceof AppError) {
     logger.warn({ err, statusCode: err.statusCode }, err.message);
-    res.status(err.statusCode).json({ error: err.message });
+    res.status(err.statusCode).json({
+      error: err.message,
+      ...(err.details ? { details: err.details } : {}),
+    });
     return;
   }
   logger.error({ err }, 'unhandled error');

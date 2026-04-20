@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts | pino-pretty",
     "build": "tsc --noEmit",
-    "start": "node dist/index.js",
+    "start": "tsx src/index.ts",
     "test": "vitest run",
     "verify:cache": "tsx scripts/verify-llm-cache-smoke.ts"
   },

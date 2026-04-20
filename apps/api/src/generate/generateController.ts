@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { AppError } from '@maple/util';
+import { AppError, ValidationError } from '@maple/util';
 import type { GenerateDeps } from './generateService.ts';
 import { GenerateRequestSchema } from './generateSchema.ts';
 import { generateSheet, LlmSheetError } from './generateService.ts';
@@ -10,7 +10,7 @@ export function createGenerateController(getDeps: () => GenerateDeps): {
   const generate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const parsed = GenerateRequestSchema.safeParse(req.body);
     if (!parsed.success) {
-      next(new AppError(JSON.stringify(parsed.error.flatten()), 400));
+      next(new ValidationError('Invalid generate request', parsed.error.flatten()));
       return;
     }
 

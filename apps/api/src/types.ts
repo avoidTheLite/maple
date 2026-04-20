@@ -38,4 +38,6 @@ export type GenerateDeps = {
   cacheDir: string | null;
   /** Directory of committed SongData JSON files (slug.json). */
   songsDir: string;
+  /** Directory of persisted layout config files (`songSlug__templateId.json`). */
+  layoutsDir: string;
 };

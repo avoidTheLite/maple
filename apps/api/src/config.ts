@@ -11,6 +11,7 @@ const envSchema = z.object({
   MAPLE_LLM_CACHE: z.enum(['off', 'read', 'readwrite']).optional(),
   MAPLE_LLM_CACHE_DIR: z.string().optional(),
   MAPLE_SONGS_DIR: z.string().optional(),
+  MAPLE_LAYOUTS_DIR: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

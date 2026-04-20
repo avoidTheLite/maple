@@ -24,6 +24,7 @@ export function createGenerateDeps(): GenerateDeps {
   const cacheDir =
     cacheMode === 'off' ? null : (process.env.MAPLE_LLM_CACHE_DIR ?? defaultCacheDir);
   const songsDir = process.env.MAPLE_SONGS_DIR ?? join(apiRoot, 'songs');
+  const layoutsDir = process.env.MAPLE_LAYOUTS_DIR ?? join(apiRoot, 'layouts');
   const model = process.env.MAPLE_LLM_MODEL ?? 'claude-opus-4-6';
   const maxTokens = Number(process.env.MAPLE_LLM_MAX_TOKENS ?? 8096) || 8096;
 
@@ -34,6 +35,7 @@ export function createGenerateDeps(): GenerateDeps {
     cacheMode,
     cacheDir,
     songsDir,
+    layoutsDir,
   };
 }
 
